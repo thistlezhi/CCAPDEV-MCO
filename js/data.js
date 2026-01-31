@@ -1,0 +1,38 @@
+// USERS
+const users = [
+  { id: 1, name: "Thistle Caindoy", email: "thistle_zhi_caindoy@dlsu.edu.ph", role: "student" },
+  { id: 2, name: "Luis Carlos", email: "luis_carlos@dlsu.edu.ph", role: "student" },
+  { id: 3, name: "Ramuel Cordero", email: "ramuel_cordero@dlsu.edu.ph", role: "student" },
+  { id: 4, name: "Alberto Descalzo", email: "alberto_descalzo@dlsu.edu.ph", role: "student" },
+  { id: 5, name: "Danny Cheng", email: "danny.cheng@dlsu.edu.ph", role: "technician" }
+];
+
+// LABS
+const labs = [
+  { id: 1, name: "Gokongwei Lab", seats: 10 },
+  { id: 2, name: "Velasco Lab", seats: 8 },
+  { id: 3, name: "Andrew Lab", seats: 12 },
+  { id: 4, name: "St. La Salle Lab", seats: 15 }
+];
+
+// RESERVATIONS
+const reservations = [
+  {
+    id: 1,
+    userId: 2,
+    labId: 1,
+    seat: 3,
+    date: "2026-02-01",
+    time: "09:00",
+    anonymous: false
+  },
+  {
+    id: 2,
+    userId: 1,
+    labId: 2,
+    seat: 1,
+    date: "2026-02-01",
+    time: "10:00",
+    anonymous: true
+  }
+];
