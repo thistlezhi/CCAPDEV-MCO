@@ -1,10 +1,10 @@
 // USERS
 const users = [
-  { id: 1, name: "Thistle Caindoy", email: "thistle_zhi_caindoy@dlsu.edu.ph", role: "student" },
-  { id: 2, name: "Luis Carlos", email: "luis_carlos@dlsu.edu.ph", role: "student" },
-  { id: 3, name: "Ramuel Cordero", email: "ramuel_cordero@dlsu.edu.ph", role: "student" },
-  { id: 4, name: "Alberto Descalzo", email: "alberto_descalzo@dlsu.edu.ph", role: "student" },
-  { id: 5, name: "Danny Cheng", email: "danny.cheng@dlsu.edu.ph", role: "technician" }
+  { id: 1, name: "Thistle Caindoy", email: "thistle_zhi_caindoy@dlsu.edu.ph",password:"thisle123", role: "student" },
+  { id: 2, name: "Luis Carlos", email: "luis_carlos@dlsu.edu.ph", password:"luis123", role: "student" },
+  { id: 3, name: "Ramuel Cordero", email: "ramuel_cordero@dlsu.edu.ph", password:"ram123", role: "student" },
+  { id: 4, name: "Alberto Descalzo", email: "alberto_descalzo@dlsu.edu.ph", password:"albert123", role: "student" },
+  { id: 5, name: "Danny Cheng", email: "danny.cheng@dlsu.edu.ph", password:"dan123", role: "technician" }
 ];
 
 // LABS
