@@ -11,6 +11,7 @@
     <div class="container">
         <h2>SIGN UP</h2>
         <form id="signUpForm" name="signUpForm">
+            <!--Ask for first name and last name-->
             <section class="name">
                 <label for="fName">First Name:</label>
                 <input type="text" id="fName" name="fName" required>
@@ -18,16 +19,17 @@
                 <label for="lName">Last Name:</label>
                 <input type="text" id="lName" name="lName" required>
             </section>
+            <!--2. Ask for email-->
             <section class="email">
                 <label for="signemail">Email:</label>
                 <input type="email" id="signemail" name="signemail" placeholder="Enter your email"required>
             </section>
-
+            <!--3. Set a password-->
             <section class="password">
                 <label for="password">Password:</label>
                 <input type="password" id="s_password" name="password" required>
             </section>
-
+            <!--4. Declare Role (Student or Technician)-->
             <section class="role">
                 <label for="role">Role:</label>
                 <input type="radio" id="student" name="role" value = "student" required>
@@ -35,12 +37,13 @@
                 <input type="radio" id="technician" name="role" value = "technician">
                 <label for="technician">Technician</label>
             </section>
-
+            <!--5. Submit for Account Creation-->
             <section class="submit">
                 <button type="submit" id="submit">Submit</button>
             </section>
         </form>
     </div>
+    <!--Reference the data.js and login_sign.js files-->
     <script src = "js/data.js"></script>
     <script src = "js/login_sign.js"></script>
 </body>
