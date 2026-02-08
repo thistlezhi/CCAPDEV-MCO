@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>My Reservations</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<h2>My Reservations</h2>
+<table id="resTable">
+  <tr>
+    <th>Lab</th>
+    <th>Seat</th>
+    <th>Date</th>
+    <th>Time</th>
+    <th>Actions</th>
+  </tr>
+</table>
+
+<a href="home.html">Back to Home</a>
+
+<script src="js/data.js"></script>
+<script>
+const loggedUser = JSON.parse(localStorage.getItem('loggedInUser')) ||
+                   JSON.parse(sessionStorage.getItem('loggedInUser'));
+
+const table = document.getElementById("resTable");
+
+reservations
+  .filter(r => r.userId === loggedUser.id)
+  .forEach(r => {
+    const lab = labs.find(l => l.id === r.labId);
+    const row = table.insertRow();
+
+    row.insertCell().textContent = lab.name;
+    row.insertCell().textContent = r.seat;
+    row.insertCell().textContent = r.date;
+    row.insertCell().textContent = r.time;
+
+    const actionCell = row.insertCell();
+    actionCell.innerHTML =
+      `<button onclick="editReservation(${r.id})">Edit</button>
+       <button onclick="cancelReservation(${r.id})">Cancel</button>`;
+  });
+
+function cancelReservation(id) {
+  reservations = reservations.filter(r => r.id !== id);
+  saveReservations();
+  location.reload();
+}
+
+function editReservation(id) {
+  alert("Edit reservation UI here.");
+}
+</script>
+
+</body>
+</html>
