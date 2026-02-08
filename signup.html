@@ -3,44 +3,41 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Lab Reservation System-Sign-Up</title>
+    <title>Lab Reservation System-Login</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
 
 <body>
+    <!--Login Form-->
     <div class="container">
-        <h2>SIGN UP</h2>
-        <form id="signUpForm" name="signUpForm">
-            <!--Ask for first name and last name-->
-            <section class="name">
-                <label for="fName">First Name:</label>
-                <input type="text" id="fName" name="fName" required>
-                <br>
-                <label for="lName">Last Name:</label>
-                <input type="text" id="lName" name="lName" required>
-            </section>
-            <!--2. Ask for email-->
+        <h2>LOGIN</h2>
+        <form id="loginForm" name="loginForm">
+            <!--1. Ask for Email-->
             <section class="email">
-                <label for="signemail">Email:</label>
-                <input type="email" id="signemail" name="signemail" placeholder="Enter your email"required>
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email"placeholder="Enter your email"required>
             </section>
-            <!--3. Set a password-->
+            <!--2. Ask for Password-->
             <section class="password">
                 <label for="password">Password:</label>
-                <input type="password" id="s_password" name="password" required>
+                <input type="password" id="password"  name="password"required>
             </section>
-            <!--4. Declare Role (Student or Technician)-->
-            <section class="role">
-                <label for="role">Role:</label>
-                <input type="radio" id="student" name="role" value = "student" required>
-                <label for="student">Student</label>
-                <input type="radio" id="technician" name="role" value = "technician">
-                <label for="technician">Technician</label>
-            </section>
-            <!--5. Submit for Account Creation-->
+            <!--3. Submit for Verification-->
+        <div class="authentication">
             <section class="submit">
-                <button type="submit" id="submit">Submit</button>
+                <button type="submit" id="submit">Login</button>
             </section>
+
+            <!--Connect to Signup page-->
+            <section class="signUp">
+                <a id="sign_up" href="signup.html">Sign Up</a>
+            </section>
+            <!--Remember Me Checkbox-->
+            <section class="rememberMe">
+            <label for="rememberMe">Remember Me</label>
+            <input type="checkbox" id="rememberMe" name="rememberMe">
+            </section>
+        </div>
         </form>
     </div>
     <!--Reference the data.js and login_sign.js files-->
