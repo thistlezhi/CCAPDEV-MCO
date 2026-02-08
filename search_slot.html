@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Search Available Slots</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<h2>Search Available Slots</h2>
+
+<select id="labSelect"></select>
+<input type="date" id="dateSelect">
+<input type="time" id="timeSelect">
+
+<button onclick="search()">Search</button>
+
+<ul id="results"></ul>
+
+<a href="home.html">Back</a>
+
+<script src="js/data.js"></script>
+<script>
+labs.forEach(l => {
+  const option = document.createElement("option");
+  option.value = l.id;
+  option.textContent = l.name;
+  document.getElementById("labSelect").appendChild(option);
+});
+
+function search() {
+  const labId = Number(document.getElementById("labSelect").value);
+  const date = document.getElementById("dateSelect").value;
+  const time = document.getElementById("timeSelect").value;
+
+  const lab = labs.find(l => l.id === labId);
+  const results = document.getElementById("results");
+  results.innerHTML = "";
+
+  for (let seat = 1; seat <= lab.seats; seat++) {
+    const taken = reservations.find(r =>
+      r.labId === labId &&
+      r.date === date &&
+      r.time === time &&
+      r.seat === seat
+    );
+
+    if (!taken) {
+      const li = document.createElement("li");
+      li.textContent = `Seat ${seat} is available`;
+      results.appendChild(li);
+    }
+  }
+}
+</script>
+
+</body>
+</html>
