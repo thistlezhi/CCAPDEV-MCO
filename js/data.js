@@ -21,7 +21,8 @@ const labs = [
 ];
 
 // RESERVATIONS
-const reservations = [
+
+let reservations = JSON.parse(localStorage.getItem('reservations')) || [
   {
     id: 1,
     userId: 2,
@@ -29,7 +30,8 @@ const reservations = [
     seat: 3,
     date: "2026-02-01",
     time: "09:00",
-    anonymous: false
+    anonymous: false,
+    dateRequested: "2026-01-28 14:32"
   },
   {
     id: 2,
@@ -38,6 +40,11 @@ const reservations = [
     seat: 1,
     date: "2026-02-01",
     time: "10:00",
-    anonymous: true
+    anonymous: true,
+    dateRequested: "2026-01-28 15:02"
   }
 ];
+
+function saveReservations() {
+  localStorage.setItem('reservations', JSON.stringify(reservations));
+}
