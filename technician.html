@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Technician Dashboard</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<h2>Technician Controls</h2>
+
+<button onclick="alert('Reserve for Walk-ins UI here')">Reserve for Walk-in</button>
+
+<h3>All Reservations</h3>
+<table id="techTable">
+  <tr>
+    <th>User</th>
+    <th>Lab</th>
+    <th>Seat</th>
+    <th>Date</th>
+    <th>Time</th>
+    <th>Actions</th>
+  </tr>
+</table>
+
+<a href="home.html">Back</a>
+
+<script src="js/data.js"></script>
+<script>
+const table = document.getElementById("techTable");
+
+reservations.forEach(r => {
+  const user = users.find(u => u.id === r.userId);
+  const lab = labs.find(l => l.id === r.labId);
+
+  const row = table.insertRow();
+  row.insertCell().textContent = user.name;
+  row.insertCell().textContent = lab.name;
+  row.insertCell().textContent = r.seat;
+  row.insertCell().textContent = r.date;
+  row.insertCell().textContent = r.time;
+
+  const actionCell = row.insertCell();
+  actionCell.innerHTML =
+    `<button onclick="removeReservation(${r.id})">Remove</button>
+     <button onclick="alert('Edit UI here')">Edit</button>`;
+});
+
+function removeReservation(id) {
+  reservations = reservations.filter(r => r.id !== id);
+  saveReservations();
+  location.reload();
+}
+</script>
+
+</body>
+</html>
