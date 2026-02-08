@@ -24,10 +24,14 @@ function renderSlots() {
   const date = dateSelect.value;
   const lab = labs.find(l => l.id === selectedLab);
 
+  if (!lab) return; //prevent crash if nothing selected
+
   for (let hour = 9; hour <= 17; hour++) {
     ["00", "30"].forEach(min => {
+
+      const time = `${hour.toString().padStart(2, '0')}:${min}`;
+
       for (let seat = 1; seat <= lab.seats; seat++) {
-        const time = `${hour}:${min}`;
         const reservation = reservations.find(r =>
           r.labId === selectedLab &&
           r.date === date &&
@@ -39,10 +43,19 @@ function renderSlots() {
         row.insertCell().textContent = time;
         row.insertCell().textContent = seat;
 
+        const statusCell = row.insertCell();
+
         if (reservation) {
           const user = users.find(u => u.id === reservation.userId);
-          row.insertCell().textContent =
-            reservation.anonymous ? "Reserved (Anonymous)" : `Reserved by ${user.name}`;
+
+          if(reservation.anonymous){
+            statusCell.textContent = "Reserved (Anonymous)";
+          } else {
+            const link = document.createElement("a");
+            link.href = `profile.html?id=${user.id}`;
+            link.textContent = `Reserved by ${user.name}`;
+            statusCell.appendChild(link);
+          }
         } else {
           row.insertCell().textContent = "Available";
         }
