@@ -5,23 +5,27 @@
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
+  <div class="container">
+    <h2>View Slot Availability</h2>
+  
+    <select id="labSelect"></select>
+    <input type="date" id="dateSelect">
+  
+    <div class="tablescroll">
+      <table id="slotsTable">
+        <tr>
+          <th>Time</th>
+          <th>Seat</th>
+          <th>Status</th>
+        </tr>
+      </table>
+    </div>
+  
+    <a href="home.html"><h3>Back to Home Page</h3></a>
 
-<h2>View Slot Availability</h2>
+  </div>
 
-<select id="labSelect"></select>
-<input type="date" id="dateSelect">
-
-<table id="slotsTable">
-  <tr>
-    <th>Time</th>
-    <th>Seat</th>
-    <th>Status</th>
-  </tr>
-</table>
-
-<a href="home.html">Back to Home Page</a>
-
-<script src="js/data.js"></script>
-<script src="js/labs.js"></script>
+  <script src="js/data.js"></script>
+  <script src="js/labs.js"></script>
 </body>
 </html>
