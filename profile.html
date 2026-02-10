@@ -28,7 +28,7 @@ const user = users.find(u => u.id === profileId) || loggedUser;
 
 document.getElementById("profileName").textContent = user.name;
 document.getElementById("profileDesc").textContent = user.description || "No description yet.";
-document.getElementById("profilePic").src = user.profilePic || "blank_pfp"; //placeholder pfp
+document.getElementById("profilePic").src = user.profilePic || "blank_pfp.jpg"; //placeholder pfp
 
 const list = document.getElementById("reservationList");
 reservations
