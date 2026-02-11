@@ -27,5 +27,26 @@
 
   <script src="js/data.js"></script>
   <script src="js/labs.js"></script>
+  <script>
+  // Restrict date picker to today and the next 7 days
+  const dateInput = document.getElementById('dateSelect');
+  
+  // Today's date will be the minimum date
+  const today = new Date();
+  const minDate = today.toISOString().split('T')[0];
+  
+  // Date 7 days from now
+  const maxDate = new Date(today);
+  maxDate.setDate(maxDate.getDate() + 7);
+  const maxDateString = maxDate.toISOString().split('T')[0];
+  
+  // Min and max attributes with its respective date values
+  dateInput.setAttribute('min', minDate);
+  dateInput.setAttribute('max', maxDateString);
+  
+  // Optionally set today as the default selected date
+  dateInput.value = minDate;
+</script>
+
 </body>
 </html>

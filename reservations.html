@@ -17,6 +17,40 @@
   </tr>
 </table>
 
+<!-- Edit Reservation Modal -->
+<div id="editModal" class="modal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2>Edit Reservation</h2>
+      <button class="close-btn" onclick="closeEditModal()">&times;</button>
+    </div>
+    <form class="modal-form" id="editForm">
+      <div class="form-group">
+        <label for="editLab">Lab:</label>
+        <select id="editLab" required disabled>
+          <option>Loading labs...</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="editDate">Date:</label>
+        <input type="date" id="editDate" required>
+      </div>
+      <div class="form-group">
+        <label for="editTime">Time:</label>
+        <input type="time" id="editTime" required>
+      </div>
+      <div class="form-group">
+        <label for="editSeat">Seat:</label>
+        <input type="number" id="editSeat" required min="1">
+      </div>
+      <div class="modal-actions">
+        <button type="button" class="cancel-btn" onclick="closeEditModal()">Cancel</button>
+        <button type="submit" class="save-btn">Save Changes</button>
+      </div>
+    </form>
+  </div>
+</div>
+
 <a href="home.html">Back to Home</a>
 
 <script src="js/data.js"></script>
@@ -25,7 +59,11 @@ const loggedUser = JSON.parse(localStorage.getItem('loggedInUser')) ||
                    JSON.parse(sessionStorage.getItem('loggedInUser'));
 
 const table = document.getElementById("resTable");
+const editModal = document.getElementById("editModal");
+const editForm = document.getElementById("editForm");
+let currentEditingReservation = null;
 
+// Populate table with user's reservations
 reservations
   .filter(r => r.userId === loggedUser.id)
   .forEach(r => {
@@ -39,20 +77,92 @@ reservations
 
     const actionCell = row.insertCell();
     actionCell.innerHTML =
-      `<button onclick="editReservation(${r.id})">Edit</button>
+      `<button onclick="openEditModal(${r.id})">Edit</button>
        <button onclick="cancelReservation(${r.id})">Cancel</button>`;
   });
 
-function cancelReservation(id) {
-  reservations = reservations.filter(r => r.id !== id);
-  saveReservations();
-  location.reload();
+// Populate lab dropdown
+function populateLabDropdown() {
+  const labSelect = document.getElementById("editLab");
+  labSelect.innerHTML = '';
+  labs.forEach(lab => {
+    const option = document.createElement("option");
+    option.value = lab.id;
+    option.textContent = lab.name;
+    labSelect.appendChild(option);
+  });
 }
 
-function editReservation(id) {
-  alert("Edit reservation UI here.");
+// Open edit modal
+function openEditModal(id) {
+  currentEditingReservation = reservations.find(r => r.id === id);
+  
+  if (!currentEditingReservation) {
+    alert("Reservation not found");
+    return;
+  }
+
+  // Check if user owns this reservation
+  if (currentEditingReservation.userId !== loggedUser.id) {
+    alert("You can only edit your own reservations");
+    return;
+  }
+
+  populateLabDropdown();
+  
+  document.getElementById("editLab").value = currentEditingReservation.labId;
+  document.getElementById("editDate").value = currentEditingReservation.date;
+  document.getElementById("editTime").value = currentEditingReservation.time;
+  document.getElementById("editSeat").value = currentEditingReservation.seat;
+  
+  editModal.style.display = "block";
+}
+
+// Close edit modal
+function closeEditModal() {
+  editModal.style.display = "none";
+  currentEditingReservation = null;
+  editForm.reset();
+}
+
+// Handle form submission
+editForm.addEventListener("submit", function(e) {
+  e.preventDefault();
+  
+  if (!currentEditingReservation) return;
+
+  const labId = parseInt(document.getElementById("editLab").value);
+  const date = document.getElementById("editDate").value;
+  const time = document.getElementById("editTime").value;
+  const seat = parseInt(document.getElementById("editSeat").value);
+
+  // Update reservation
+  currentEditingReservation.labId = labId;
+  currentEditingReservation.date = date;
+  currentEditingReservation.time = time;
+  currentEditingReservation.seat = seat;
+
+  saveReservations();
+  closeEditModal();
+  location.reload();
+});
+
+// Close modal when clicking outside of it
+window.onclick = function(event) {
+  if (event.target == editModal) {
+    closeEditModal();
+  }
+}
+
+function cancelReservation(id) {
+  if (confirm("Are you sure you want to cancel this reservation?")) {
+    reservations = reservations.filter(r => r.id !== id);
+    saveReservations();
+    location.reload();
+  }
 }
 </script>
+
 
 </body>
 </html>
