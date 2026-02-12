@@ -15,16 +15,46 @@
         <p id="profileDesc"></p>
       </div>
     </div>
+
     <div class="profilereservation">
       <h3>Current Reservations</h3>
       <div class="reservationscroll">
         <ul id="reservationList"></ul>
       </div>
     </div>
+
     <div class="backfooter">
       <div id="editSection"></div>
       <a href="home.html">Back to Home Page</a>
     </div>
+  </div>
+</div>
+
+<!--Edit profile-->
+<div id="editProfileModal" class="modal" style="display:none;">
+  <div class="modal-content">
+    
+    <div class="modal-header">
+      <h2>Edit Profile</h2>
+      <button class="close-button" onclick="closeEditModal()">&times;</button>
+    </div>
+
+    <form id="editProfileForm" class="modal-form">
+      <div class="form-group">
+        <label>Description:</label>
+        <textarea id="editDescription" rows="3"></textarea>
+      </div>
+
+      <div class="form-group">
+        <label>Profile Picture URL:</label>
+        <input type="text" id="editProfilePic">
+      </div>
+
+      <div class="modal-actions">
+        <button type="button" onclick="closeEditModal()">Cancel</button>
+        <button type="submit">Save Changes</button>
+      </div>
+    </form>
   </div>
 </div>
 
@@ -39,10 +69,18 @@ const loggedUser = JSON.parse(localStorage.getItem('loggedInUser')) ||
 
 const user = users.find(u => u.id === profileId) || loggedUser;
 
+if (!user) {
+  alert("User not found.");
+  window.location.href = "home.html";
+}
+
+
+//populate profile info
 document.getElementById("profileName").textContent = user.name;
 document.getElementById("profileDesc").textContent = user.description || "No description yet.";
 document.getElementById("profilePic").src = user.profilePic || "blank_pfp.jpg"; //placeholder pfp
 
+//populate reservations
 const list = document.getElementById("reservationList");
 reservations
   .filter(r => r.userId === user.id)
@@ -53,12 +91,16 @@ reservations
     list.appendChild(li);
   });
 
+
+//edit/delete only if own profile
 if (loggedUser.id === user.id) {
   document.getElementById("editSection").innerHTML =
-    `<button onclick="alert('Edit Profile UI here')">Edit Profile</button>
+    `<button onclick="openEditModal()">Edit Profile</button>
      <button onclick="deleteAccount()">Delete Account</button>`;
 }
 
+
+//Delete account
 function deleteAccount() {
   if(!confirm("Are you sure you want to delete your account? This action cannot be undone.")) {
     return;
@@ -77,6 +119,53 @@ function deleteAccount() {
   alert("Account deleted.");
   window.location.href = "login.html";
 }
+
+
+//Edit profile
+const editProfileModal = document.getElementById("editProfileModal");
+const editProfileForm = document.getElementById("editProfileForm");
+
+function openEditModal(){
+  document.getElementById("editDescription").value = user.description || "";
+  document.getElementById("editProfilePic").value = user.profilePic || "";
+
+  editProfileModal.style.display = "block";
+}
+
+function closeEditModal() {
+  editProfileModal.style.display = "none";
+}
+
+editProfileForm.addEventListener("submit", function(e) {
+  e.preventDefault();
+
+  user.description =
+    document.getElementById("editDescription").value;
+
+  user.profilePic =
+    document.getElementById("editProfilePic").value;
+
+  saveUsers();
+
+  if(localStorage.getItem('loggedInUser')) {
+    localStorage.setItem('loggedInUser', JSON.stringify(user));
+  } else {
+    sessionStorage.setItem('loggedInUser', JSON.stringify(user));
+  }
+
+  closeEditModal();
+  location.reload();
+});
+
+
+// Close modal when clicking outside
+window.addEventListener("click", function(event) {
+  if (event.target === editProfileModal) {
+    closeEditModal();
+  }
+});
+
+
 </script>
 
 </body>
