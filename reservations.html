@@ -13,6 +13,7 @@
     <th>Seat</th>
     <th>Date</th>
     <th>Time</th>
+    <th>Date Requested</th>
     <th>Actions</th>
   </tr>
 </table>
@@ -89,6 +90,7 @@ reservations
     row.insertCell().textContent = r.seat;
     row.insertCell().textContent = r.date;
     row.insertCell().textContent = r.time;
+    row.insertCell().textContent = r.dateRequested;
 
     const actionCell = row.insertCell();
     actionCell.innerHTML =
