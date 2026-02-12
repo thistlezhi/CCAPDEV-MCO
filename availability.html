@@ -20,6 +20,15 @@
         </tr>
       </table>
     </div>
+
+    <!--Search Available Slots-->
+
+    <h2>Search Available Slots</h2>
+    <input type="time" id="timeSelect">
+    <button onclick="search()">Search</button>
+
+    <ul id="results"></ul>
+
   
     <a href="home.html"><h3>Back to Home Page</h3></a>
 
@@ -47,6 +56,35 @@
   
   // Optionally set today as the default selected date
   dateInput.value = minDate;
+
+  // Search function
+  function search() {
+    const labId = Number(document.getElementById("labSelect").value);
+    const date = document.getElementById("dateSelect").value;
+    const time = document.getElementById("timeSelect").value;
+
+    const lab = labs.find(l => l.id === labId);
+    const results = document.getElementById("results");
+    results.innerHTML = "";
+
+    for (let seat = 1; seat <= lab.seats; seat++) {
+      const taken = reservations.find(r =>
+        r.labId === labId &&
+        r.date === date &&
+        r.time === time &&
+        r.seat === seat
+      );
+
+      if (!taken) {
+        const li = document.createElement("li");
+        li.textContent = `Seat ${seat} is available`;
+        results.appendChild(li);
+      }
+    }
+  }
+
+
+
 </script>
 
 </body>
