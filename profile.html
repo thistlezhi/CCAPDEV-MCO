@@ -60,6 +60,9 @@ if (loggedUser.id === user.id) {
 }
 
 function deleteAccount() {
+  if(!confirm("Are you sure you want to delete your account? This action cannot be undone.")) {
+    return;
+  }
   // Remove user from users array
   users = users.filter(u => u.id !== loggedUser.id);
   saveUsers(); // Save updated users to localStorage
@@ -75,7 +78,6 @@ function deleteAccount() {
   window.location.href = "login.html";
 }
 </script>
-
 
 </body>
 </html>
