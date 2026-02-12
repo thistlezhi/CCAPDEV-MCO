@@ -5,60 +5,69 @@
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-
-<h2>My Reservations</h2>
-<table id="resTable">
-  <tr>
-    <th>Lab</th>
-    <th>Seat</th>
-    <th>Date</th>
-    <th>Time</th>
-    <th>Date Requested</th>
-    <th>Actions</th>
-  </tr>
-</table>
-
-<!-- Edit Reservation Modal -->
-<div id="editModal" class="modal">
-  <div class="modal-content">
-    <div class="modal-header">
-      <h2>Edit Reservation</h2>
-      <button class="close-btn" onclick="closeEditModal()">&times;</button>
+  <div class="container">
+    <div class="reservations">
+      <div>
+        <div class="headertext">My Reservations</div>
+        <table id="resTable">
+          <tr>
+            <th>Lab</th>
+            <th>Seat</th>
+            <th>Date</th>
+            <th>Time</th>
+            <th>Date Requested</th>
+            <th>Actions</th>
+          </tr>
+        </table>
+      </div>
+      
+      <!-- Edit Reservation Modal -->
+      <div id="editModal" class="modal">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h2>Edit Reservation</h2>
+            <button class="close-btn" onclick="closeEditModal()">&times;</button>
+          </div>
+      
+          <form class="modal-form" id="editForm">
+            <div class="form-group">
+              <label for="editLab">Lab:</label>
+              <select id="editLab" required>
+                <option>Loading labs...</option>
+              </select>
+            </div>
+      
+            <div class="form-group">
+              <label for="editDate">Date:</label>
+              <input type="date" id="editDate" required>
+            </div>
+      
+            <div class="form-group">
+              <label for="editTime">Time:</label>
+              <input type="time" id="editTime" required>
+            </div>
+            
+            <div class="form-group">
+              <label for="editSeat">Seat:</label>
+              <input type="number" id="editSeat" required min="1">
+            </div>
+            
+            <div class="modal-actions">
+              <button type="button" class="cancel-btn" onclick="closeEditModal()">Cancel</button>
+              <button type="submit" class="save-btn">Save Changes</button>
+            </div>
+          </form>
+        </div>
+      </div>
+      
+      
+      <div class="backfooter">
+        <a href="home.html">Back to Home Page</a>
+      </div>
     </div>
-
-    <form class="modal-form" id="editForm">
-      <div class="form-group">
-        <label for="editLab">Lab:</label>
-        <select id="editLab" required>
-          <option>Loading labs...</option>
-        </select>
-      </div>
-
-      <div class="form-group">
-        <label for="editDate">Date:</label>
-        <input type="date" id="editDate" required>
-      </div>
-
-      <div class="form-group">
-        <label for="editTime">Time:</label>
-        <input type="time" id="editTime" required>
-      </div>
-      
-      <div class="form-group">
-        <label for="editSeat">Seat:</label>
-        <input type="number" id="editSeat" required min="1">
-      </div>
-      
-      <div class="modal-actions">
-        <button type="button" class="cancel-btn" onclick="closeEditModal()">Cancel</button>
-        <button type="submit" class="save-btn">Save Changes</button>
-      </div>
-    </form>
+    
   </div>
-</div>
 
-
-<a href="home.html">Back to Home</a>
 
 <script src="js/data.js"></script>
 
