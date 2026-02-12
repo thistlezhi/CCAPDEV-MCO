@@ -5,15 +5,17 @@
   <title>Lab Reservation System</title>
   <link rel="stylesheet" href="css/style.css">
 </head>
+
 <body>
   <div class="header">
     <div class="homenav">
       <h1>Lab Reservation System</h1>
       <nav>
         <a href="availability.html">View Slot Availability</a>
-        <a href="reserve.html">Reserve Slot</a>
-        <a href="reservations.html">My Reservations</a>
+        <a href="reserve.html" id="reserveLink">Reserve Slot</a>
+        <a href="reservations.html" id="myReservationsLink">My Reservations</a>
         <a href="profile.html">User Profile</a>
+        <a href="technician.html" id="techLink" style="display:none;">Technician Dashboard</a>
       </nav>
     </div>
   
@@ -21,5 +23,33 @@
   </div>
   <script src="js/data.js"></script>
   <script src="js/login_sign.js"></script>
+  
+  <!--Restricted technician.html to technicians only and restricted reserve slots n my reservations to students only-->
+  <script>
+  const loggedUser =
+    JSON.parse(localStorage.getItem('loggedInUser')) ||
+    JSON.parse(sessionStorage.getItem('loggedInUser'));
+
+  if (loggedUser && loggedUser.role === "technician") {
+    document.getElementById("techLink").style.display = "inline";
+
+    const reserveLink = document.getElementById("reserveLink");
+    if(reserveLink) {
+      reserveLink.style.display = "none";
+    }
+
+    const myReservationsLink = document.getElementById("myReservationsLink");
+    if(myReservationsLink) {
+      myReservationsLink.style.display = "none";
+    }
+  }
+  </script>
+
+
+
+
+
+
+  
 </body>
 </html>
