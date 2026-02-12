@@ -28,7 +28,7 @@ let reservations = JSON.parse(localStorage.getItem('reservations')) || [
     userId: 2,
     labId: 1,
     seat: 3,
-    date: "2026-02-01",
+    date: "2026-04-03",
     time: "09:00",
     anonymous: false,
     dateRequested: "2026-01-28 14:32"
@@ -38,7 +38,7 @@ let reservations = JSON.parse(localStorage.getItem('reservations')) || [
     userId: 1,
     labId: 2,
     seat: 1,
-    date: "2026-02-01",
+    date: "2026-05-03",
     time: "10:00",
     anonymous: true,
     dateRequested: "2026-01-28 15:02"
