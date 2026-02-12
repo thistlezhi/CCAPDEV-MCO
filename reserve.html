@@ -17,7 +17,7 @@
 </select>
 
 <label>Date:</label>
-<input type="date">
+<input type="date" id="dateSelect">
 
 <label>Time:</label>
 <select>
@@ -34,6 +34,27 @@
 <button>Confirm Reservation</button>
 
 <a href="home.html">Back to Home Page</a>
+
+
+  <script>
+  const dateInput = document.getElementById('dateSelect');
+  
+  // Date today
+  const today = new Date();
+  const minDate = today.toISOString().split('T')[0];
+  
+  // Date 7 days from now
+  const maxDate = new Date(today);
+  maxDate.setDate(maxDate.getDate() + 7);
+  const maxDateString = maxDate.toISOString().split('T')[0];
+  
+  // Restriction for today and next 7 days
+  dateInput.setAttribute('min', minDate);
+  dateInput.setAttribute('max', maxDateString);
+  
+  // Optionally set today as the default selected date
+  dateInput.value = minDate;
+</script>
 
 </body>
 </html>
