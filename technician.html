@@ -112,6 +112,17 @@
 
 <script src="js/data.js"></script>
 <script>
+
+  //only allow technicians here
+const loggedUser = 
+  JSON.parse(localStorage.getItem('loggedInUser')) ||
+  JSON.parse(sessionStorage.getItem('loggedInUser'));
+  
+if (!loggedUser || loggedUser.role !=="technician") {
+  alert("Access denied. This is for technicians only.")
+   window.location.href = "home.html";
+  }
+
 const table = document.getElementById("techTable");
 const editModal = document.getElementById("editModal");
 const editForm = document.getElementById("editForm");
