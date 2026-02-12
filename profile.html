@@ -6,14 +6,27 @@
 </head>
 <body>
 
-<h2 id="profileName"></h2>
-<img id="profilePic" width="150">
-<p id="profileDesc"></p>
-
-<h3>Current Reservations</h3>
-<ul id="reservationList"></ul>
-<div id="editSection"></div>
-<a href="home.html">Back to Home Page</a>
+<div class="container">
+  <div class="profile">
+    <div class="profileheader">
+      <img id="profilePic">
+      <div>
+        <h2 id="profileName"></h2>
+        <p id="profileDesc"></p>
+      </div>
+    </div>
+    <div class="profilereservation">
+      <h3>Current Reservations</h3>
+      <div class="reservationscroll">
+        <ul id="reservationList"></ul>
+      </div>
+    </div>
+    <div class="profilefooter">
+      <div id="editSection"></div>
+      <a href="home.html">Back to Home Page</a>
+    </div>
+  </div>
+</div>
 
 <script src="js/data.js"></script>
 

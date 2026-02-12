@@ -32,49 +32,67 @@ body {
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
 }
 
+.profile{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; 
+  gap: 10px;                   
+  width: 80%;                  
+  max-width: 900px;
+  height: 600px;
+  margin: 50px auto;
+
+  background: rgba(255, 255, 255, 0.9); 
+  padding: 40px;
+  border-radius: 15px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+
 h1,
 h2,
-h3 {
+h3,
+a {
     color: white;
     text-shadow: 2px 2px 4px rgba(0,0,0,1);
-    margin-bottom: 20px;
-}
-
-.authentication{
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+    
+  }
   
-  margin-bottom: 20px;
-  font-size: 0.9em;
-}
-
-.logincheckbox {
+  .authentication{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    
+    margin-bottom: 20px;
+    font-size: 0.9em;
+  }
+  
+  .logincheckbox {
     display: flex;
     flex-direction: row;
     align-items: center;
     gap: 8px; 
     width: auto;
-}
-.email,
-.password{
-  display: flex;
-  flex-direction: column; 
-  margin-bottom: 15px;
-}
+  }
+  .email,
+  .password{
+    display: flex;
+    flex-direction: column; 
+    margin-bottom: 15px;
+  }
+  
+  .password{
+    padding-bottom: 10px;
+  }
 
-.password{
-  padding-bottom: 10px;
-}
-
-label {
+  label {
     margin-bottom: 5px;
     font-weight: bold;
     text-align: left;
-}
-
-#email,
-#password{
+  }
+  
+  #email,
+  #password{
   width: 100%; 
   padding: 10px;
   border: 1px solid #ccc;
@@ -124,6 +142,53 @@ a {
   margin-bottom: 10px;
 }
 
+/*Profile Page*/
+
+.profileheader{
+  display: flex;
+  flex-direction: row;
+  height: auto;
+}
+
+
+#profilePic{
+  height: 150px;
+  width: 150px;
+  margin-right: 20px;
+}
+
+#profileName {
+  margin: 0;
+  font-size: 24px;
+}
+
+#profileDesc {
+  margin: 5px 0 0 0; 
+  color: #555;     
+}
+
+.profiledetails{
+  display: flex;
+  flex-direction: row;  
+}
+
+.profilereservation{
+  height: 100%;
+  margin-bottom: 10px;
+}
+
+.reservationscroll{
+  height: 300px;
+  overflow-y: scroll;
+}
+
+.profilefooter{
+  display: flex;
+  flex-direction: column;
+  gap:20px;
+  justify-content: flex-end;
+  align-items: flex-end;
+}
 table {
   border-collapse: collapse;
   margin-top: 15px;
