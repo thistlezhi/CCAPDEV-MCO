@@ -6,31 +6,42 @@
 </head>
 <body>
   <div class="container">
-    <h2>View Slot Availability</h2>
+    <div class="availability">
+      <div class="headertext">View Slot Availability</div>
+        
+      <div class="labselection">
+        <select id="labSelect"></select>
+        <input type="date" id="dateSelect">
+
+        <div class="tablescroll">
+          <table id="slotsTable">
+            <tr>
+              <th>Time</th>
+              <th>Seat</th>
+              <th>Status</th>
+            </tr>
+          </table>
+        </div>
+      </div>
+
+      <div class="headertext">Search Available Slots</div>
+
+      <div class="searchslot">        
+        <div>
+          <input type="time" id="timeSelect">
+          <button onclick="search()">Search</button>
+        </div>
+        <ul id="results"></ul>
+      </div>
+      <!--Search Available Slots-->
   
-    <select id="labSelect"></select>
-    <input type="date" id="dateSelect">
   
-    <div class="tablescroll">
-      <table id="slotsTable">
-        <tr>
-          <th>Time</th>
-          <th>Seat</th>
-          <th>Status</th>
-        </tr>
-      </table>
+  
+    
+      <div class="backfooter">
+        <a href="home.html">Back to Home Page</a>
+      </div>
     </div>
-
-    <!--Search Available Slots-->
-
-    <h2>Search Available Slots</h2>
-    <input type="time" id="timeSelect">
-    <button onclick="search()">Search</button>
-
-    <ul id="results"></ul>
-
-  
-    <a href="home.html"><h3>Back to Home Page</h3></a>
 
   </div>
 
@@ -74,7 +85,7 @@
         r.time === time &&
         r.seat === seat
       );
-
+      
       if (!taken) {
         const li = document.createElement("li");
         li.textContent = `Seat ${seat} is available`;

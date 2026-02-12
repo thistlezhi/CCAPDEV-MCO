@@ -43,7 +43,7 @@ function renderSlots() {
         row.insertCell().textContent = time;
         row.insertCell().textContent = seat;
 
-        const statusCell = row.insertCell();
+        const statusCell = row.insertCell(); ss
 
         if (reservation) {
           const user = users.find(u => u.id === reservation.userId);
@@ -57,7 +57,8 @@ function renderSlots() {
             statusCell.appendChild(link);
           }
         } else {
-          row.insertCell().textContent = "Available";
+
+          statusCell.textContent = "Available"; 
         }
       }
     });
