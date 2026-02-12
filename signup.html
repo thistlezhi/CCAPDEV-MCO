@@ -47,24 +47,9 @@
         </form>
     </div>
 
-
     <!--Reference the data.js and login_sign.js files-->
     <script src = "js/data.js"></script>
     <script src = "js/login_sign.js"></script>
-
-    <!--Redirect back to login after signing up-->
-    <script>
-        document.getElementById("signUpForm").addEventListener("submit", function(event) {
-            event.preventDefault(); //stop default form submission
-
-            //Simulate success and redirect
-            alert("Sign-up successful! Go to Login?");
-            window.location.href = "login.html";
-        });
-
-    </script>
-
-
 </body>
 </html>
 </html>
