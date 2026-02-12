@@ -32,7 +32,7 @@
 <select id="seatSelect">
   <option value="1">1</option>
   <option value="3">3</option>
-  <option value="5">5</option>
+  <option value="4">4</option>
   <option value="6">6</option>
   <option value="7">7</option>
 </select>
@@ -79,6 +79,19 @@
   
       // Optionally set today as the default selected date
       dateInput.value = minDate;
+
+
+      //helper function for local datetime
+      function getLocalDateTime() {
+        const now = new Date();
+        const year = now.getFullYear();
+        const month = String(now.getMonth() + 1).padStart(2, '0');
+        const day = String(now.getDate()).padStart(2, '0');
+        const hours = String(now.getHours()).padStart(2, '0');
+        const minutes = String(now.getMinutes()).padStart(2, '0');
+        return `${year}-${month}-${day} ${hours}:${minutes}`;
+
+      }
 
 
       //Reservation
@@ -145,8 +158,8 @@
           date: date,
           time: time,
           anonymous: anonymous,
-          dateRequested: new Date().toISOString().slice(0,16).replace("T"," ")
-        }
+          dateRequested: getLocalDateTime()
+        };
 
 
         reservations.push(newReservation);

@@ -60,11 +60,16 @@ if (loggedUser.id === user.id) {
 }
 
 function deleteAccount() {
+  // Remove user from users array
   users = users.filter(u => u.id !== loggedUser.id);
-  saveUsers();
-
+  saveUsers(); // Save updated users to localStorage
+  // Remove user's reservations
   reservations = reservations.filter(r => r.userId !== loggedUser.id);
-  saveReservations();
+  saveReservations();// Save updated reservations to localStorage
+
+  //Clear session and local storage
+  localStorage.removeItem('loggedInUser');
+  sessionStorage.removeItem('loggedInUser');
 
   alert("Account deleted.");
   window.location.href = "login.html";
