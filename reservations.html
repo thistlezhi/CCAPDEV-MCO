@@ -55,9 +55,16 @@
 <a href="home.html">Back to Home</a>
 
 <script src="js/data.js"></script>
+
 <script>
-const loggedUser = JSON.parse(localStorage.getItem('loggedInUser')) ||
-                   JSON.parse(sessionStorage.getItem('loggedInUser'));
+const loggedUser = 
+  JSON.parse(localStorage.getItem('loggedInUser')) ||
+  JSON.parse(sessionStorage.getItem('loggedInUser'));
+
+if (!loggedUser || loggedUser.role !== "student") {
+  alert("Only student accounts can see their reservations.");
+  window.location.href = "home.html";
+}
 
 const table = document.getElementById("resTable");
 const editModal = document.getElementById("editModal");
