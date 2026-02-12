@@ -35,6 +35,17 @@
 
 <a href="home.html">Back to Home Page</a>
 
+  <script>
+    const loggedUser =
+      JSON.parse(localStorage.getItem('loggedInUser')) ||
+      JSON.parse(sessionStorage.getItem('loggedInUser'));
+      
+    if (!loggedUser || loggedUser.role !== "student") {
+      alert("Only student accounts can reserve.");
+      window.location.href = "home.html";
+    }
+  </script>
+
 
   <script>
   const dateInput = document.getElementById('dateSelect');
