@@ -26,7 +26,10 @@ const labs = [
 //let reservations = JSON.parse(localStorage.getItem('reservations')) || [
 
 //localStorage.removeItem('reservations');
-let reservations = JSON.parse(localStorage.getItem('reservations')) || [
+let reservations = JSON.parse(localStorage.getItem('reservations'));
+
+if (!reservations || reservations.length === 0) {
+  reservations = [
   {
     id: 1,
     userId: 2,
@@ -47,10 +50,17 @@ let reservations = JSON.parse(localStorage.getItem('reservations')) || [
     anonymous: true,
     dateRequested: "2026-01-28 15:02"
   }
-];
+  ];
+
+  localStorage.setItem('reservations', JSON.stringify(reservations));
+}
+
+function saveReservations() {
+  localStorage.setItem('reservations', JSON.stringify(reservations));
+}
 
 // function saveReservations() {
 //   localStorage.setItem('reservations', JSON.stringify(reservations));
 
-localStorage.setItem('reservations', JSON.stringify(reservations));
+//localStorage.setItem('reservations', JSON.stringify(reservations));
 
