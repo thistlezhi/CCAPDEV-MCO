@@ -1,5 +1,5 @@
 //LOGIN FUNCTIONS
-const loginform = document.getElementById('loginForm');
+const loginForm = document.getElementById('loginForm');
 //Checks if login form exists
 if(loginForm){
   loginForm.addEventListener( 'submit', function(event){
