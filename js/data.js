@@ -25,8 +25,8 @@ const labs = [
 
 //let reservations = JSON.parse(localStorage.getItem('reservations')) || [
 
-localStorage.removeItem('reservations');
-let reservations = [
+//localStorage.removeItem('reservations');
+let reservations = JSON.parse(localStorage.getItem('reservations')) || [
   {
     id: 1,
     userId: 2,
