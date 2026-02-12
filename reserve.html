@@ -7,34 +7,24 @@
 <body>
 
 <h2>Reserve a Slot</h2>
+<form id="reservationForm">
+  <label for = "lab-Select">Lab:</label>
 
-<label>Lab:</label>
-<select id="labSelect">
-  <option value="Gokongwei Lab">Gokongwei Lab</option>
-  <option value="Velasco Lab">Velasco Lab</option>
-  <option value="Andrew Lab">Andrew Lab</option>
-  <option value="St. La Salle Lab">St. La Salle Lab</option>
-</select>
+  <select class="lab-select" id="labSelect">
+    <option value = "1">Gokongwei Lab</option>
+    <option value = "2">Velasco Lab</option>
+    <option value = "3">Andrew Lab</option>
+    <option value = "4">St. La Salle Lab</option>
+  </select>
 
-<label>Date:</label>
-<input type="date" id="dateSelect">
+<label for="date-select">Date:</label>
+<input type="date" id="dateSelect" class="date-select">
 
-<label>Time:</label>
-<select id="timeSelect">
-  <option value="09:00">09:00</option>
-  <option value="09:30">09:30</option>
-  <option value="10:00">10:00</option>
-  <option value="10:30">10:30</option>
-  <option value="11:00">11:00</option>
-</select>
-
-<label>Seat:</label>
-<select id="seatSelect">
-  <option value="1">1</option>
-  <option value="3">3</option>
-  <option value="5">5</option>
-  <option value="6">6</option>
-  <option value="7">7</option>
+<label for="time-select">Time:</label>
+<select class ="time-select" id="timeSelect">
+  <option value = "9:00">09:00</option>
+  <option value = "9:30">09:30</option>
+  <option value = "10:00">10:00</option>
 </select>
 
 <label>
@@ -42,124 +32,90 @@
   Reserve Anonymously
 </label>
 
-<button id="confirmButton">Confirm Reservation</button>
-
+<button type="submit" id="confirmBtn">Confirm Reservation</button>
+</form>
 <a href="home.html">Back to Home Page</a>
-
-  <script src ="js/data.js"></script>
-
+<script src="js/data.js"></script>
+<!---Date restriction script--->
   <script>
-    document.addEventListener("DOMContentLoaded", function(){
-
-      //Role-based restriction
-      const loggedUser =
-        JSON.parse(localStorage.getItem('loggedInUser')) ||
-        JSON.parse(sessionStorage.getItem('loggedInUser'));
-      
-      if (!loggedUser || loggedUser.role !== "student") {
-        alert("Only student accounts can reserve.");
-        window.location.href = "home.html";
-        return;
-      }
-
-      //Restrict dates
-      const dateInput = document.getElementById('dateSelect');
-      // Date today
-      const today = new Date();
-      const minDate = today.toISOString().split('T')[0];
-
-      // Date 7 days from now
-      const maxDate = new Date(today);
-      maxDate.setDate(maxDate.getDate() + 7);
-      const maxDateString = maxDate.toISOString().split('T')[0];
-
-      // Restriction for today and next 7 days
-      dateInput.setAttribute('min', minDate);
-      dateInput.setAttribute('max', maxDateString);
+  const dateInput = document.getElementById('dateSelect');
   
-      // Optionally set today as the default selected date
-      dateInput.value = minDate;
+  // Date today
+  const today = new Date();
+  const minDate = today.toISOString().split('T')[0];
+  
+  // Date 7 days from now
+  const maxDate = new Date(today);
+  maxDate.setDate(maxDate.getDate() + 7);
+  const maxDateString = maxDate.toISOString().split('T')[0];
+  
+  // Restriction for today and next 7 days
+  dateInput.setAttribute('min', minDate);
+  dateInput.setAttribute('max', maxDateString);
+  
+  // Optionally set today as the default selected date
+  dateInput.value = minDate;
+</script>
+<!---Main reservation Script --->
+<script>
+  document.getElementById('reservationForm').addEventListener('submit', function(event){
+    event.preventDefault();
+    //GET CURRENT USER
+    const loggedUser = JSON.parse(localStorage.getItem('loggedInUser'));
+    if(!loggedUser){
+      alert('Please log in to make a reservation.');
+      window.location.href = 'login.html';
+      return;
+    };
 
+    //1. Get values from the form
+    const labSelect = parseInt(document.getElementById('labSelect').value);
+    const dateSelect = document.getElementById('dateSelect').value;
+    const timeSelect = document.getElementById('timeSelect').value;
+    const anonymous = document.getElementById('anonymous').checked;
+    //2. Find Lab
+    const lab = labs.find(l => l.id === labSelect);
+    //3. Find seat
+    // Filter reservations for the selected lab, date, and time
+    const occupied = reservations.filter(r => r.labId === labSelect && r.date === dateSelect 
+    && r.time === timeSelect).map(r => r.seat);
 
-      //Reservation
-      document.getElementById("confirmButton").addEventListener("click", function() {
-        
-        const labName = document.getElementById("labSelect").value;
-        const date = dateInput.value;
-        const time = document.getElementById("timeSelect").value;
-        const seat = parseInt(document.getElementById("seatSelect").value);
-        const anonymous = document.getElementById("anonymous").checked;
+    let availableSeats = [];
+    for(let i = 1; i <= lab.seats; i++){
+      if(!occupied.includes(i)){
+        availableSeats.push(i);
+      }
+    }
 
-        if (!date || !time) {
-          alert("Please complete all fiels.");
-          return;
-        }
+    if(availableSeats.length === 0){
+      alert('No available seats for this slot. Please choose another time or date.');
+      return;
+    }
+    if(availableSeats){
+      //4. Create reservation object
+      const newRes = {
+        id: reservations.length + 1,
+        userId: loggedUser.id,
+        labId: labSelect,
+        seat: availableSeats[0],
+        date: dateSelect,
+        time: timeSelect,
+        anonymous: anonymous,
+        dateRequested:  new Date().toISOString().slice(0,16).replace('T',' ')
+      };
+      //5. Push new reservation to reservation array
+      reservations.push(newRes);
+      //6. Save to local storage
+      localStorage.setItem('reservations', JSON.stringify(reservations));
+      //7. Alert success and reset form
+      alert('Reservation successful! Your seat number is ' + availableSeats[0]);
+      document.getElementById('reservationForm').reset(); 
+    }else{
+      alert('No available seats for this slot. Please choose another time or date.');
+    }
 
-        const lab = labs.find(l => l.name === labName);
-
-        //check seat conflict
-        const seatConflict = reservations.find (r =>
-          r.labId === lab.id &&
-          r.date === date &&
-          r.time === time &&
-          r.seat === seat
-        );
-
-        if(seatConflict) {
-          alert("This seat is already reserved.");
-          return;
-        }
-
-        //if same user books same thing
-        const userConflict = reservations.find(r =>
-          r.userId === loggedUser.id &&
-          r.date === date &&
-          r.time === time
-        );
-
-        if(userConflict) {
-          alert("You already have a reservation at this time.");
-          return;
-        }
-
-        
-        //check slot conflict
-        const slotConflict = reservations.find (r =>
-          r.labId === lab.id &&
-          r.date === date &&
-          r.time === time
-        );
-
-        if (slotConflict) {
-          alert("This slot is already reserved.")
-          return;
-        }
-
-
-        //create new reservation
-        const newReservation = {
-          id: reservations.length + 1,
-          userId: loggedUser.id,
-          labId: lab.id,
-          seat: 1,
-          date: date,
-          time: time,
-          anonymous: anonymous,
-          dateRequested: new Date().toISOString().slice(0,16).replace("T"," ")
-        }
-
-
-        reservations.push(newReservation);
-        localStorage.setItem("reservations", JSON.stringify(reservations));
-
-        alert("Reservation successful!")
-        window.location.href = "reservations.html";
-      });
-
-    });
-
-    
-  </script>
+  });
+</script>
 
 </body>
 </html>
