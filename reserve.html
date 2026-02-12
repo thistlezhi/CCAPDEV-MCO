@@ -5,46 +5,61 @@
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
+  <div class="container">
+    <div class="reserve">
+      <div class="headertext">Reserve a Slot</div>
 
-<h2>Reserve a Slot</h2>
+        <div class="formlab">
+          <label>Lab:</label>
+          <select id="labSelect">
+            <option value="Gokongwei Lab">Gokongwei Lab</option>
+            <option value="Velasco Lab">Velasco Lab</option>
+            <option value="Andrew Lab">Andrew Lab</option>
+            <option value="St. La Salle Lab">St. La Salle Lab</option>
+          </select>
+        </div>
 
-<label>Lab:</label>
-<select id="labSelect">
-  <option value="Gokongwei Lab">Gokongwei Lab</option>
-  <option value="Velasco Lab">Velasco Lab</option>
-  <option value="Andrew Lab">Andrew Lab</option>
-  <option value="St. La Salle Lab">St. La Salle Lab</option>
-</select>
+        <div class="formdate">
+          <label>Date:</label>
+          <input type="date" id="dateSelect">
+        </div>
 
-<label>Date:</label>
-<input type="date" id="dateSelect">
-
-<label>Time:</label>
-<select id="timeSelect">
-  <option value="09:00">09:00</option>
-  <option value="09:30">09:30</option>
-  <option value="10:00">10:00</option>
-  <option value="10:30">10:30</option>
-  <option value="11:00">11:00</option>
-</select>
-
-<label>Seat:</label>
-<select id="seatSelect">
-  <option value="1">1</option>
-  <option value="3">3</option>
-  <option value="4">4</option>
-  <option value="6">6</option>
-  <option value="7">7</option>
-</select>
-
-<label>
-  <input type="checkbox" id="anonymous">
-  Reserve Anonymously
-</label>
-
-<button id="confirmButton">Confirm Reservation</button>
-
-<a href="home.html">Back to Home Page</a>
+        <div class="formtime">
+          <label>Time:</label>
+          <select id="timeSelect">
+            <option value="09:00">09:00</option>
+            <option value="09:30">09:30</option>
+            <option value="10:00">10:00</option>
+            <option value="10:30">10:30</option>
+            <option value="11:00">11:00</option>
+          </select>
+        </div>
+        
+        <div class="formseat">
+          <label>Seat:</label>
+          <select id="seatSelect">
+            <option value="1">1</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+          </select>
+        </div>
+        
+        
+        <label>
+          <input type="checkbox" id="anonymous">
+          Reserve Anonymously
+        </label>
+        
+        <button id="confirmButton">Confirm Reservation</button>
+      
+      
+      <div class="backfooter">
+        <a href="home.html">Back to Home Page</a>
+      </div>
+    </div>
+  </div>
 
   <script src ="js/data.js"></script>
 

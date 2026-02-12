@@ -43,7 +43,7 @@ function renderSlots() {
         row.insertCell().textContent = time;
         row.insertCell().textContent = seat;
 
-        const statusCell = row.insertCell(); ss
+        const statusCell = row.insertCell(); 
 
         if (reservation) {
           const user = users.find(u => u.id === reservation.userId);
