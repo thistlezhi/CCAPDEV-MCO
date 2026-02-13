@@ -28,7 +28,7 @@
 
       <div class="searchslot">        
         <div>
-          <input type="time" id="timeSelect">
+          <select id="timeSelect"></select>
           <button onclick="search()">Search</button>
         </div>
         <div class="resultscroll">
@@ -69,6 +69,23 @@
   
   // Optionally set today as the default selected date
   dateInput.value = minDate;
+
+  const timeSelect = document.getElementById("timeSelect");
+
+  //time is every 30 mins
+  function generateTimeOptions(){
+    for(let hour = 7; hour <= 21; hour++){
+      ["00", "30"].forEach(min => {
+        const time = `${String(hour).padStart(2, "0")}:${min}`;
+        const option = document.createElement("option");
+        option.value = time;
+        option.textContent = time;
+        timeSelect.appendChild(option);
+      });
+    }
+  }
+
+  generateTimeOptions();
 
   // Search function
   function search() {
