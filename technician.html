@@ -279,6 +279,16 @@ function closeWalkinModal() {
   walkinForm.reset();
 }
 
+function isSlotTaken(labId, date, time, seat, excludeId = null) {
+  return reservations.some(res => 
+    res.labId === labId &&
+    res.date === date &&
+    res.time === time &&
+    res.seat === seat &&
+    res.id !== excludeId // Skip the current reservation if we are editing
+  );
+}
+
 function limitWalkinDate() {
   const dateInput = document.getElementById('walkinDate');
   const today = new Date();
@@ -298,6 +308,12 @@ walkinForm.addEventListener('submit', function(e) {
   const date = document.getElementById('walkinDate').value;
   const time = document.getElementById('walkinTime').value;
   const seat = parseInt(document.getElementById('walkinSeat').value);
+
+  // CHECK FOR OVERLAP
+  if (isSlotTaken(labId, date, time, seat)) {
+    alert("Error: This seat is already reserved for the selected lab, date, and time.");
+    return; // Stop the function here
+  }
 
   // create new id
   const newId = reservations.length ? Math.max(...reservations.map(r => r.id)) + 1 : 1;
