@@ -22,6 +22,7 @@
               <th>Seat</th>
               <th>Date</th>
               <th>Time</th>
+              <th>Date Requested</th>
               <th>Actions</th>
             </tr>
           </table>
@@ -151,6 +152,7 @@
     row.insertCell().textContent = r.seat;
     row.insertCell().textContent = r.date;
     row.insertCell().textContent = r.time;
+    row.insertCell().textContent = r.dateRequested || "N/A";
     
     const actionCell = row.insertCell();
     actionCell.innerHTML =
@@ -210,11 +212,26 @@ editForm.addEventListener("submit", function(e) {
   const time = document.getElementById("editTime").value;
   const seat = parseInt(document.getElementById("editSeat").value);
   
+  const isConflict = reservations.some(r => 
+    r.labId === labId && 
+    r.date === date && 
+    r.time === time && 
+    r.seat === seat && 
+    r.id !== currentEditingReservation.id
+  );
+
+  if (isConflict) {
+    alert("Error: This seat is already taken for the selected lab, date, and time.");
+    return; 
+  }
+
   // update reservation
   currentEditingReservation.labId = labId;
   currentEditingReservation.date = date;
   currentEditingReservation.time = time;
   currentEditingReservation.seat = seat;
+
+  currentEditingReservation.dateRequested = new Date().toISOString().slice(0,16).replace('T',' ') + " (Edited)";
 
 
   saveReservations();
