@@ -102,7 +102,9 @@
                 <option>09:30</option>
                 <option>10:00</option>
                 <option>10:30</option>
-                <option>11:00</option> <!-- add more time slots if needed, not sure sa time options -->
+                <option>11:00</option> 
+                <option>11:30</option>
+                <option>12:00</option> <!-- add more time slots if needed, not sure sa time options -->
               </select>
             </div>
             <div class="form-group">
@@ -121,9 +123,23 @@
         <a href="home.html">Back to Home Page</a>
       </div>
     </div>
+
   </div>
     <script src="js/data.js"></script>
     <script>
+
+      //helper function for local datetime
+      function getLocalDateTime() {
+        const now = new Date();
+        const year = now.getFullYear();
+        const month = String(now.getMonth() + 1).padStart(2, '0');
+        const day = String(now.getDate()).padStart(2, '0');
+        const hours = String(now.getHours()).padStart(2, '0');
+        const minutes = String(now.getMinutes()).padStart(2, '0');
+        return `${year}-${month}-${day} ${hours}:${minutes}`;
+
+      }
+
       //only allow technicians here
       
       const loggedUser = 
@@ -231,7 +247,7 @@ editForm.addEventListener("submit", function(e) {
   currentEditingReservation.time = time;
   currentEditingReservation.seat = seat;
 
-  currentEditingReservation.dateRequested = new Date().toISOString().slice(0,16).replace('T',' ') + " (Edited)";
+  currentEditingReservation.dateRequested = getLocalDateTime() + " (Edited)";
 
 
   saveReservations();
@@ -342,7 +358,7 @@ walkinForm.addEventListener('submit', function(e) {
     date: date,
     time: time,
     anonymous: false,
-    dateRequested: new Date().toISOString().slice(0,16).replace('T',' ')
+    dateRequested: getLocalDateTime()
   };
 
   reservations.push(newRes);
@@ -359,4 +375,3 @@ window.addEventListener('click', function(event) {
 
 </body>
 </html>
-
