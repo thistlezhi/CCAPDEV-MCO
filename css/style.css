@@ -17,7 +17,9 @@ body {
   min-height: 100vh;
 }
 
-a,
+.backfooter a,
+.header a,
+.redirect a,
 ul {
   color: white;
   text-shadow: 2px 2px 4px rgba(0,0,0,1);
@@ -174,6 +176,11 @@ nav a {
   margin-bottom: 10px;
 }
 
+#slotsTable a{
+  color: darkgreen;
+  text-decoration: none;
+}
+
 table {
   border-collapse: collapse;
   margin-top: 15px;
@@ -187,6 +194,7 @@ th, td {
   border: 1px solid #aaa;
   padding: 5px 10px;
 }
+
 
 /*Reserve Slot Page*/
 
@@ -235,6 +243,10 @@ th, td {
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
 }
 
+.reservations .tablescroll{
+  height: 500px;
+}
+
 /*Profile Page*/
 
 .profile{
@@ -246,7 +258,7 @@ th, td {
   max-width: 900px;
   height: 600px;
   margin: 50px auto;
-
+  
   background: rgba(0, 156, 8, 0.9); 
   padding: 40px;
   border-radius: 15px;
@@ -260,10 +272,16 @@ th, td {
 }
 
 
-#profilePic{
-  height: 150px;
+#profilePic {
   width: 150px;
+  height: 150px;
+  object-fit: cover; 
+  border-radius: 15px;
   margin-right: 20px;
+
+  background: url("../images/blank_pfp.jpg") no-repeat center;
+  background-size: cover;
+  display: block;
 }
 
 #profileName {
@@ -274,6 +292,11 @@ th, td {
 #profileDesc {
   margin: 5px 0 0 0; 
   color: #555;     
+  height: 60%;
+  width: 77vh;
+  background-color: #8F8;
+  padding: 10px;
+  border-radius: 10px;
 }
 
 .profiledetails{
@@ -289,6 +312,9 @@ th, td {
 .reservationscroll{
   height: 300px;
   overflow-y: scroll;
+  background-color: #4C4;
+  border-radius: 10px;
+  padding: 10px;
 }
 
 .backfooter{
@@ -300,6 +326,62 @@ th, td {
   align-items: flex-end;
 }
 
+/* Sign Up Page*/
+.signup{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap:10px;
+  
+  width: 350px;
+  background: rgba(0, 156, 8, 0.9); 
+  padding: 40px;
+  border-radius: 15px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+.signup .name,
+.signup .email,
+.signup .password{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-bottom: 0;
+}
+
+.signup #fName,
+.signup #lName,
+.signup #signemail,
+.signup #s_password{
+  width: 70%;
+}
+
+.role{
+
+  margin-bottom: 10px;
+}
+
+/* Technician Page*/
+
+.technician{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 10px;                   
+  width: 80%;                  
+  max-width: 900px;
+  height: 600px;
+  margin: 50px auto;
+  
+  background: rgba(0, 156, 8, 0.9); 
+  padding: 40px;
+  border-radius: 15px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+.technician .tablescroll{
+  height: 400px;
+}
 
 /* Modal Styles */
 

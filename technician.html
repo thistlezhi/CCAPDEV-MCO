@@ -1,177 +1,188 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <title>Technician Dashboard</title>
-  <link rel="stylesheet" href="css/style.css">
+  <head>
+    <title>Technician Dashboard</title>
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-
-<h2>Technician Controls</h2>
-
-<button onclick="openWalkinModal()">Reserve for Walk-in</button>
-
-<h3>All Reservations</h3>
-<table id="techTable">
-  <tr>
-    <th>User</th>
-    <th>Lab</th>
-    <th>Seat</th>
-    <th>Date</th>
-    <th>Time</th>
-    <th>Actions</th>
-  </tr>
-</table>
-
-
-<!-- Edit Reservation Modal -->
-<div id="editModal" class="modal">
-  <div class="modal-content">
-    <div class="modal-header">
-      <h2>Edit Reservation</h2>
-      <button class="close-btn" onclick="closeEditModal()">&times;</button>
-    </div>
-    <form class="modal-form" id="editForm">
-      <div class="form-group">
-        <label for="editUser">User:</label>
-        <input type="text" id="editUser" disabled>
-      </div>
-      <div class="form-group">
-        <label for="editLab">Lab:</label>
-        <select id="editLab" required>
-          <option>Loading labs...</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label for="editDate">Date:</label>
-        <input type="date" id="editDate" required>
-      </div>
-      <div class="form-group">
-        <label for="editTime">Time:</label>
-        <input type="time" id="editTime" required>
-      </div>
-      <div class="form-group">
-        <label for="editSeat">Seat:</label>
-        <input type="number" id="editSeat" required min="1">
-      </div>
-      <div class="modal-actions">
-        <button type="button" class="cancel-btn" onclick="closeEditModal()">Cancel</button>
-        <button type="submit" class="save-btn">Save Changes</button>
-      </div>
-    </form>
-  </div>
-</div>
-
-<a href="home.html">Back</a>
-
-
-<!-- Walk-in Reservation Modal -->
-<div id="walkinModal" class="modal">
-  <div class="modal-content">
-    <div class="modal-header">
-      <h2>Reserve for Walk-in</h2>
-      <button class="close-btn" onclick="closeWalkinModal()">&times;</button>
-    </div>
-    <form class="modal-form" id="walkinForm">
-      <div class="form-group">
-        <label for="walkinStudent">Student:</label>
-        <select id="walkinStudent" required>
-          <option>Loading students...</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label for="walkinLab">Lab:</label>
-        <select id="walkinLab" required>
-          <option>Loading labs...</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label for="walkinDate">Date:</label>
-        <input type="date" id="walkinDate" required>
-      </div>
-      <div class="form-group">
-        <label for="walkinTime">Time:</label>
-        <select id="walkinTime" required>
-          <option>09:00</option>
-          <option>09:30</option>
-          <option>10:00</option>
-          <option>10:30</option>
-          <option>11:00</option> <!-- add more time slots if needed, not sure sa time options -->
-        </select>
-      </div>
-      <div class="form-group">
-        <label for="walkinSeat">Seat:</label>
-        <input type="number" id="walkinSeat" required min="1">
-      </div>
-      <div class="modal-actions">
-        <button type="button" class="cancel-btn" onclick="closeWalkinModal()">Cancel</button>
-        <button type="submit" class="save-btn">Create Reservation</button>
-      </div>
-    </form>
-  </div>
-</div>
-
-<script src="js/data.js"></script>
-<script>
-
-  //only allow technicians here
-const loggedUser = 
-  JSON.parse(localStorage.getItem('loggedInUser')) ||
-  JSON.parse(sessionStorage.getItem('loggedInUser'));
   
-if (!loggedUser || loggedUser.role !=="technician") {
-  alert("Access denied. This is for technicians only.")
-   window.location.href = "home.html";
+  <div class="container">
+    <div class="technician">
+      <div>
+        <div class="headertext">Technician Controls</div>
+        <button onclick="openWalkinModal()">Reserve for Walk-in</button>
+      </div>
+      <div>
+        <div class="headertext">All Reservations</div>
+        <div class="tablescroll">
+          <table id="techTable">
+            <tr>
+              <th>User</th>
+              <th>Lab</th>
+              <th>Seat</th>
+              <th>Date</th>
+              <th>Time</th>
+              <th>Actions</th>
+            </tr>
+          </table>
+        </div>
+      </div>
+      
+      
+      
+      <!-- Edit Reservation Modal -->
+      <div id="editModal" class="modal">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h2>Edit Reservation</h2>
+            <button class="close-btn" onclick="closeEditModal()">&times;</button>
+          </div>
+          <form class="modal-form" id="editForm">
+            <div class="form-group">
+              <label for="editUser">User:</label>
+              <input type="text" id="editUser" disabled>
+            </div>
+            <div class="form-group">
+              <label for="editLab">Lab:</label>
+              <select id="editLab" required>
+                <option>Loading labs...</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="editDate">Date:</label>
+              <input type="date" id="editDate" required>
+            </div>
+            <div class="form-group">
+              <label for="editTime">Time:</label>
+              <input type="time" id="editTime" required>
+            </div>
+            <div class="form-group">
+              <label for="editSeat">Seat:</label>
+              <input type="number" id="editSeat" required min="1">
+            </div>
+            <div class="modal-actions">
+              <button type="button" class="cancel-btn" onclick="closeEditModal()">Cancel</button>
+              <button type="submit" class="save-btn">Save Changes</button>
+            </div>
+          </form>
+        </div>
+      </div>
+      
+      
+      
+      <!-- Walk-in Reservation Modal -->
+      <div id="walkinModal" class="modal">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h2>Reserve for Walk-in</h2>
+            <button class="close-btn" onclick="closeWalkinModal()">&times;</button>
+          </div>
+          <form class="modal-form" id="walkinForm">
+            <div class="form-group">
+              <label for="walkinStudent">Student:</label>
+              <select id="walkinStudent" required>
+                <option>Loading students...</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="walkinLab">Lab:</label>
+              <select id="walkinLab" required>
+                <option>Loading labs...</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="walkinDate">Date:</label>
+              <input type="date" id="walkinDate" required>
+            </div>
+            <div class="form-group">
+              <label for="walkinTime">Time:</label>
+              <select id="walkinTime" required>
+                <option>09:00</option>
+                <option>09:30</option>
+                <option>10:00</option>
+                <option>10:30</option>
+                <option>11:00</option> <!-- add more time slots if needed, not sure sa time options -->
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="walkinSeat">Seat:</label>
+              <input type="number" id="walkinSeat" required min="1">
+            </div>
+            <div class="modal-actions">
+              <button type="button" class="cancel-btn" onclick="closeWalkinModal()">Cancel</button>
+              <button type="submit" class="save-btn">Create Reservation</button>
+            </div>
+          </form>
+        </div>
+      </div>
+      
+      <div class="backfooter">
+        <a href="home.html">Back to Home Page</a>
+      </div>
+    </div>
+  </div>
+    <script src="js/data.js"></script>
+    <script>
+      //only allow technicians here
+      
+      const loggedUser = 
+      JSON.parse(localStorage.getItem('loggedInUser')) ||
+      JSON.parse(sessionStorage.getItem('loggedInUser'));
+      
+      if (!loggedUser || loggedUser.role !=="technician") {
+        alert("Access denied. This is for technicians only.")
+    window.location.href = "home.html";
   }
-
-const table = document.getElementById("techTable");
-const editModal = document.getElementById("editModal");
-const editForm = document.getElementById("editForm");
-let currentEditingReservation = null;
-
-
-// Populate table with all reservations
-reservations.forEach(r => {
-  const user = users.find(u => u.id === r.userId);
-  const lab = labs.find(l => l.id === r.labId);
-
-  const row = table.insertRow();
-  row.insertCell().textContent = user.name;
-  row.insertCell().textContent = lab.name;
-  row.insertCell().textContent = r.seat;
-  row.insertCell().textContent = r.date;
-  row.insertCell().textContent = r.time;
-
-  const actionCell = row.insertCell();
-  actionCell.innerHTML =
+  
+  const table = document.getElementById("techTable");
+  const editModal = document.getElementById("editModal");
+  const editForm = document.getElementById("editForm");
+  let currentEditingReservation = null;
+  
+  
+  // Populate table with all reservations
+  reservations.forEach(r => {
+    const user = users.find(u => u.id === r.userId);
+    const lab = labs.find(l => l.id === r.labId);
+    
+    const row = table.insertRow();
+    row.insertCell().textContent = user.name;
+    row.insertCell().textContent = lab.name;
+    row.insertCell().textContent = r.seat;
+    row.insertCell().textContent = r.date;
+    row.insertCell().textContent = r.time;
+    
+    const actionCell = row.insertCell();
+    actionCell.innerHTML =
     `<button onclick="openEditModal(${r.id})">Edit</button>
      <button onclick="removeReservation(${r.id})">Remove</button>`;
-});
-
-// lab dropdown for the edit modal
-function populateLabDropdown() {
-  const labSelect = document.getElementById("editLab");
-  labSelect.innerHTML = '';
-  labs.forEach(lab => {
-    const option = document.createElement("option");
-    option.value = lab.id;
-    option.textContent = lab.name;
-    labSelect.appendChild(option);
-  });
-}
-
-// Open edit modal - technicians can edit any reservation
-function openEditModal(id) {
-  currentEditingReservation = reservations.find(r => r.id === id);
-  
-  if (!currentEditingReservation) {
-    alert("Reservation not found");
-    return;
-  }
-
-  const user = users.find(u => u.id === currentEditingReservation.userId);
-  
-  populateLabDropdown();
-  
+    });
+    
+    // lab dropdown for the edit modal
+    function populateLabDropdown() {
+      const labSelect = document.getElementById("editLab");
+      labSelect.innerHTML = '';
+      labs.forEach(lab => {
+        const option = document.createElement("option");
+        option.value = lab.id;
+        option.textContent = lab.name;
+        labSelect.appendChild(option);
+      });
+    }
+    
+    // Open edit modal - technicians can edit any reservation
+    function openEditModal(id) {
+      currentEditingReservation = reservations.find(r => r.id === id);
+      
+      if (!currentEditingReservation) {
+        alert("Reservation not found");
+        return;
+      }
+      
+      const user = users.find(u => u.id === currentEditingReservation.userId);
+      
+      populateLabDropdown();
+      
   document.getElementById("editUser").value = user.name;
   document.getElementById("editLab").value = currentEditingReservation.labId;
   document.getElementById("editDate").value = currentEditingReservation.date;
@@ -193,12 +204,12 @@ editForm.addEventListener("submit", function(e) {
   e.preventDefault();
   
   if (!currentEditingReservation) return;
-
+  
   const labId = parseInt(document.getElementById("editLab").value);
   const date = document.getElementById("editDate").value;
   const time = document.getElementById("editTime").value;
   const seat = parseInt(document.getElementById("editSeat").value);
-
+  
   // update reservation
   currentEditingReservation.labId = labId;
   currentEditingReservation.date = date;
