@@ -139,6 +139,7 @@ function openEditModal(id) {
   }
 
   populateLabDropdown();
+  setDateLimits();
   
   document.getElementById("editLab").value = currentEditingReservation.labId;
   document.getElementById("editDate").value = currentEditingReservation.date;
@@ -155,6 +156,19 @@ function closeEditModal() {
   editForm.reset();
 }
 
+function setDateLimits() {
+    const dateInput = document.getElementById("editDate");
+    const today = new Date();
+    
+    const minDate = today.toISOString().split('T')[0];
+    
+    const maxDate = new Date(today);
+    maxDate.setDate(today.getDate() + 7);
+    const maxDateString = maxDate.toISOString().split('T')[0];
+
+    dateInput.setAttribute("min", minDate);
+    dateInput.setAttribute("max", maxDateString);
+}
 
 // Handle form submission
 editForm.addEventListener("submit", function(e) {
@@ -184,6 +198,15 @@ editForm.addEventListener("submit", function(e) {
     r.date === date &&
     r.time === time
   );
+
+  const now = new Date();
+  const timestamp = now.getFullYear() + "-" + 
+                    String(now.getMonth() + 1).padStart(2, '0') + "-" + 
+                    String(now.getDate()).padStart(2, '0') + " " + 
+                    String(now.getHours()).padStart(2, '0') + ":" + 
+                    String(now.getMinutes()).padStart(2, '0');
+  
+  currentEditingReservation.dateRequested = timestamp + " (Edited)";
 
   if (userConflict) {
     alert("You already have a reservation at this time.");

@@ -199,6 +199,7 @@
       
       const user = users.find(u => u.id === currentEditingReservation.userId);
       
+      setDateLimits();
       populateLabDropdown();
       
   document.getElementById("editUser").value = user.name;
@@ -215,6 +216,16 @@ function closeEditModal() {
   editModal.style.display = "none";
   currentEditingReservation = null;
   editForm.reset();
+}
+
+function setDateLimits() {
+    const dateInput = document.getElementById("editDate");
+    const today = new Date();
+    
+    const minDate = today.toISOString().split('T')[0];
+
+    dateInput.setAttribute("min", minDate);
+    dateInput.removeAttribute("max");
 }
 
 // handle form submission
