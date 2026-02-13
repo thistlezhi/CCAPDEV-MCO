@@ -49,7 +49,39 @@ if (!reservations || reservations.length === 0) {
     time: "10:00",
     anonymous: true,
     dateRequested: "2026-01-28 15:02"
+  },
+  {
+    id: 3,
+    userId: 4,
+    labId: 3,
+    seat: 9,
+    date: "2026-02-17",
+    time: "11:00",
+    anonymous: false,
+    dateRequested: "2026-02-10 13:00"
+  },
+  {
+    id: 4,
+    userId: 3,
+    labId: 4,
+    seat: 2,
+    date: "2026-02-15",
+    time: "10:30",
+    anonymous: false,
+    dateRequested: "2026-02-08 17:34"
+  },
+  {
+    id: 5,
+    userId: 1,
+    labId: 3,
+    seat: 5,
+    date: "2026-02-17",
+    time: "11:00",
+    anonymous: false,
+    dateRequested: "2026-02-11 14:50"
   }
+
+
   ];
 
   localStorage.setItem('reservations', JSON.stringify(reservations));
