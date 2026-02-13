@@ -342,7 +342,8 @@ th, td {
 
 .signup .name,
 .signup .email,
-.signup .password{
+.signup .password,
+.forget .email{
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -352,12 +353,12 @@ th, td {
 .signup #fName,
 .signup #lName,
 .signup #signemail,
-.signup #s_password{
+.signup #s_password,
+.forget #forgetemail{
   width: 70%;
 }
 
 .role{
-
   margin-bottom: 10px;
 }
 
@@ -382,6 +383,22 @@ th, td {
 .technician .tablescroll{
   height: 400px;
 }
+
+/* Forgot Password Page*/
+.forget{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 10px;                   
+  width: 350px;
+  margin: 50px auto;
+  
+  background: rgba(0, 156, 8, 0.9); 
+  padding: 40px;
+  border-radius: 15px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
 
 /* Modal Styles */
 
