@@ -35,7 +35,7 @@ if (!reservations || reservations.length === 0) {
     userId: 2,
     labId: 1,
     seat: 3,
-    date: "2026-02-15",
+    date: "2026-03-15",
     time: "09:00",
     anonymous: false,
     dateRequested: "2026-01-28 14:32"
@@ -45,7 +45,7 @@ if (!reservations || reservations.length === 0) {
     userId: 1,
     labId: 2,
     seat: 1,
-    date: "2026-02-14",
+    date: "2026-03-14",
     time: "10:00",
     anonymous: true,
     dateRequested: "2026-01-28 15:02"
@@ -55,7 +55,7 @@ if (!reservations || reservations.length === 0) {
     userId: 4,
     labId: 3,
     seat: 9,
-    date: "2026-02-17",
+    date: "2026-03-17",
     time: "11:00",
     anonymous: false,
     dateRequested: "2026-02-10 13:00"
@@ -65,7 +65,7 @@ if (!reservations || reservations.length === 0) {
     userId: 3,
     labId: 4,
     seat: 2,
-    date: "2026-02-15",
+    date: "2026-03-15",
     time: "10:30",
     anonymous: false,
     dateRequested: "2026-02-08 17:34"
@@ -75,7 +75,7 @@ if (!reservations || reservations.length === 0) {
     userId: 1,
     labId: 3,
     seat: 5,
-    date: "2026-02-17",
+    date: "2026-03-16",
     time: "11:00",
     anonymous: false,
     dateRequested: "2026-02-11 14:50"
