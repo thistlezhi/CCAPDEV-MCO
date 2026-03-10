@@ -11,11 +11,12 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     const table = document.getElementById("resTable");
     const labSelect = document.getElementById("labSelect");
+    const editLabSelect = document.getElementById("editLab"); // Added for Edit Modal
     const dateInput = document.getElementById("dateSelect"); 
     const seatSelect = document.getElementById("seatSelect");
     const timeSelect = document.getElementById("timeSelect");
 
-    //Load labs
+    // 1. Load labs and populate BOTH dropdowns
     const labRes = await fetch("/labs");
     const labs = await labRes.json();
 
@@ -23,14 +24,14 @@ document.addEventListener("DOMContentLoaded", async () => {
         const option = document.createElement("option");
         option.value = lab.id;
         option.textContent = lab.name;
-        labSelect.appendChild(option);
+        
+        labSelect.appendChild(option.cloneNode(true)); // Main form
+        if(editLabSelect) editLabSelect.appendChild(option); // Edit modal
     });
 
-
-    //7-day limit
+    // 2. Date Limits
     const today = new Date();
     const minDate = today.toISOString().split("T")[0];
-
     const maxDate = new Date(today);
     maxDate.setDate(today.getDate() + 7);
 
@@ -38,11 +39,9 @@ document.addEventListener("DOMContentLoaded", async () => {
     dateInput.max = maxDate.toISOString().split("T")[0];
     dateInput.value = minDate;
 
-    
-    //time options
+    // 3. Generate Time Options
     function generateTimeOptions(){
         timeSelect.innerHTML = "";
-
         for(let hour = 7; hour <= 21; hour++) {
             ["00", "30"].forEach(min => {
                 const time = `${String(hour).padStart(2,"0")}:${min}`;
@@ -53,13 +52,10 @@ document.addEventListener("DOMContentLoaded", async () => {
             });
         }
     }
-
     generateTimeOptions();
 
-
-    //load reservations
+    // 4. Load Reservations into Table
     async function loadReservations() {
-
         const res = await fetch("/reservations");
         const reservations = await res.json();
 
@@ -77,51 +73,35 @@ document.addEventListener("DOMContentLoaded", async () => {
         reservations
         .filter(r => r.userId === loggedUser.id)
         .forEach(r => {
-
             const lab = labs.find(l => l.id == r.labId);
-
             const row = table.insertRow();
-
-            row.insertCell().textContent = lab.name;
+            row.insertCell().textContent = lab ? lab.name : "Unknown";
             row.insertCell().textContent = r.seat;
             row.insertCell().textContent = r.date;
             row.insertCell().textContent = r.time;
-
-            const formatted = new Date(r.dateRequested).toLocaleString();
             row.insertCell().textContent = r.dateRequested;
 
-            row.insertCell().innerHTML =
-                `
+            row.insertCell().innerHTML = `
                 <button onclick="openEditModal(${r.id})">Edit</button>
                 <button onclick="deleteReservation(${r.id})">Cancel</button>
-                `;
+            `;
         });
     }
 
-    await loadReservations();
-    await loadAvailableSeats();
-
-
-    //load available seats
+    // 5. Load Available Seats
     async function loadAvailableSeats() {
-        
         const labId = labSelect.value;
         const date = dateInput.value;
         const time = timeSelect.value;
-
         if(!labId || !date || !time) return;
 
-        const res = await fetch (`/labs/${labId}/availability?date=${date}&time=${time}`);
-
+        const res = await fetch(`/labs/${labId}/availability?date=${date}&time=${time}`);
         const seats = await res.json();
         seatSelect.innerHTML = "";
-
         const availableSeats = seats.filter(s => s.available);
 
         if(availableSeats.length === 0){
-            const opt = document.createElement("option");
-            opt.textContent = "No seats available.";
-            seatSelect.appendChild(opt);
+            seatSelect.innerHTML = "<option>No seats available.</option>";
             return;
         }
 
@@ -129,20 +109,17 @@ document.addEventListener("DOMContentLoaded", async () => {
             const opt = document.createElement("option");
             opt.value = s.seat;
             opt.textContent = `Seat ${s.seat}`;
-
             seatSelect.appendChild(opt);
         });
     }
 
+    // Event Listeners for Availability
     labSelect.addEventListener("change", loadAvailableSeats);
     dateInput.addEventListener("change", loadAvailableSeats);
     timeSelect.addEventListener("change", loadAvailableSeats);
 
-
-    // create reservation
-    document.getElementById("confirmButton")
-    .addEventListener("click", async () => {
-
+    // 6. Create Reservation
+    document.getElementById("confirmButton").addEventListener("click", async () => {
         const body = {
             userId: loggedUser.id,
             labId: Number(labSelect.value),
@@ -158,42 +135,62 @@ document.addEventListener("DOMContentLoaded", async () => {
             body: JSON.stringify(body)
         });
 
-        const data = await response.json();
-
-        if (!data.success) {
-            alert(data.message);
-            return;
+        if (response.ok) {
+            await loadReservations();
+            await loadAvailableSeats();
         }
-
-        await loadReservations();
-        await loadAvailableSeats();
     });
 
+    // 7. Edit Form Submission
+    document.getElementById("editForm").addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const id = e.target.dataset.currentId;
+        const updatedBody = {
+            labId: Number(document.getElementById("editLab").value),
+            date: document.getElementById("editDate").value,
+            time: document.getElementById("editTime").value,
+            seat: Number(document.getElementById("editSeat").value)
+        };
+        await saveEditReservation(id, updatedBody);
+    });
+
+    // Initial load calls
+    await loadReservations();
+    await loadAvailableSeats();
 });
 
+// --- GLOBAL FUNCTIONS (Outside DOMContentLoaded so buttons can find them) ---
 
-//edit reservation
+window.openEditModal = async function(id) {
+    const res = await fetch("/reservations");
+    const reservations = await res.json();
+    const r = reservations.find(item => item.id === id);
+
+    if (r) {
+        document.getElementById("editLab").value = r.labId;
+        document.getElementById("editDate").value = r.date;
+        document.getElementById("editTime").value = r.time;
+        document.getElementById("editSeat").value = r.seat;
+        document.getElementById("editForm").dataset.currentId = id;
+        document.getElementById("editModal").style.display = "block";
+    }
+};
+
+window.closeEditModal = function() {
+    document.getElementById("editModal").style.display = "none";
+};
+
 async function saveEditReservation(id, body) {
     await fetch(`/reservations/${id}`, {
         method: "PUT",
-        headers: {
-            "Content-Type": "application/json"
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body)
     });
-    
     location.reload();
 }
 
-
-//delete reservation
 async function deleteReservation(id) {
-
     if (!confirm("Cancel reservation?")) return;
-
-    await fetch(`/reservations/${id}`, {
-        method: "DELETE"
-    });
-
+    await fetch(`/reservations/${id}`, { method: "DELETE" });
     location.reload();
 }
