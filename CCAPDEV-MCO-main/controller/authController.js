@@ -4,32 +4,31 @@ const router = express.Router();
 const Users = require('../model/Users');
 
 //login route
-router.post('/login', (req, res) => {
+router.post('/login', async(req, res) => {
+try {
+        const { email, password } = req.body;
+        // Use Mongoose findOne instead of array find
+        const user = await Users.findOne({ email });
 
-    const { email, password } = req.body;
+        if (!user || user.password !== password) {
+            return res.json({ success: false, message: "Invalid email or password." });
+        }
 
-    const user = Users.findByEmail(email);
-
-    if (!user || user.password !== password) {
-        return res.json({
-            success: false,
-            message: "Invalid email or password."
-        });
+        res.json({ success: true, user });
+    } catch (err) {
+        res.status(500).json({ success: false, message: "Server error" });
     }
-
-    res.json({
-        success: true,
-        user
-    });
 });
 
 
 //signup route
-router.post('/signup', (req, res) => {
-    const { fName, lName, email, password, role } = req.body;
+router.post('/signup', async (req, res) => {
+
+    try {
+        const { fName, lName, email, password, role } = req.body;
 
     //check if already exists through email
-    const existingUser = Users.findByEmail(email);
+    const existingUser = await Users.findOne({email});
 
     if (existingUser){
         return res.json({
@@ -39,7 +38,6 @@ router.post('/signup', (req, res) => {
     }
 
     const newUser = {
-        id: Date.now(),
         name: `${fName} ${lName}`,
         email,
         password,
@@ -47,12 +45,15 @@ router.post('/signup', (req, res) => {
         description: ""
     };
 
-    Users.addUser(newUser);
+    await newUser.save();
 
     res.json({
         success: true,
         user: newUser
     });
+    } catch (err) {
+        res.status(500).json({ success: false, message: "Server error" });
+    }
 });
 
 module.exports = router;
