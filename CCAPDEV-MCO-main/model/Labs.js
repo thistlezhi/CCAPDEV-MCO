@@ -1,10 +1,9 @@
-
 // LABS
-const labs = [
-  { id: 1, name: "Gokongwei Lab", seats: 10 },
-  { id: 2, name: "Velasco Lab", seats: 8 },
-  { id: 3, name: "Andrew Lab", seats: 12 },
-  { id: 4, name: "St. La Salle Lab", seats: 15 }
-];
+const mongoose = require('mongoose');
+const labSchema = new mongoose.Schema({
+  name: { type: String, required: true },
+  totalSeats: { type: Number, required: true }
+});
 
-exports.getLabs = () => labs;
+module.exports = mongoose.model('Lab', labSchema);
+//exports.getLabs = () => labs;
