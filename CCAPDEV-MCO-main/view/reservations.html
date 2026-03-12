@@ -6,7 +6,19 @@
 </head>
 
 <body>
-
+  <div class="header">
+    <div class="homenav">
+      <div class="headertext home">Lab Reservation System</div>
+      <nav>
+        <a href="availability.html">View Slot Availability</a>
+        <a href="reservations.html" id="ReservationsLink">Reservations</a>
+        <a href="profile.html">User Profile</a>
+        <a href="technician.html" id="techLink" style="display:none;">Technician Dashboard</a>
+      </nav>
+    </div>
+  
+    <input type="button" value="Logout" id="logout" name="logout" onclick="logout()">
+  </div>
   <div class="container">
     <div class="reservations">
       <div class="headertext">Reservations</div>
