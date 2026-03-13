@@ -1,9 +1,0 @@
-// LABS
-const mongoose = require('mongoose');
-const labSchema = new mongoose.Schema({
-  name: { type: String, required: true },
-  totalSeats: { type: Number, required: true }
-});
-
-module.exports = mongoose.model('Lab', labSchema);
-//exports.getLabs = () => labs;
