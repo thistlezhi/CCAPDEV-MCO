@@ -71,19 +71,21 @@ document.addEventListener("DOMContentLoaded", async () => {
         `;
 
         reservations
-        .filter(r => r.userId === loggedUser.id)
+        .filter(r => r.userId._id === loggedUser._id)
         .forEach(r => {
-            const lab = labs.find(l => l.id == r.labId);
+            const labName = r. labId?.name || "Unknown.";
             const row = table.insertRow();
-            row.insertCell().textContent = lab ? lab.name : "Unknown";
+            row.insertCell().textContent = labName;
             row.insertCell().textContent = r.seat;
             row.insertCell().textContent = r.date;
             row.insertCell().textContent = r.time;
-            row.insertCell().textContent = r.dateRequested;
+
+            const formattedDate = new Date(r.dateRequested).toLocaleString();
+            row.insertCell().textContent = formattedDate;
 
             row.insertCell().innerHTML = `
-                <button onclick="openEditModal(${r.id})">Edit</button>
-                <button onclick="deleteReservation(${r.id})">Cancel</button>
+                <button onclick="openEditModal('${r._id}')">Edit</button>
+                <button onclick="deleteReservation('${r._id}')">Cancel</button>
             `;
         });
     }
@@ -121,8 +123,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     // 6. Create Reservation
     document.getElementById("confirmButton").addEventListener("click", async () => {
         const body = {
-            userId: loggedUser.id,
-            labId: Number(labSelect.value),
+            userId: loggedUser._id,
+            labId: labSelect.value,
             seat: Number(seatSelect.value),
             date: dateInput.value,
             time: timeSelect.value,
@@ -146,7 +148,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         e.preventDefault();
         const id = e.target.dataset.currentId;
         const updatedBody = {
-            labId: Number(document.getElementById("editLab").value),
+            labId: document.getElementById("editLab").value,
             date: document.getElementById("editDate").value,
             time: document.getElementById("editTime").value,
             seat: Number(document.getElementById("editSeat").value)
@@ -164,10 +166,10 @@ document.addEventListener("DOMContentLoaded", async () => {
 window.openEditModal = async function(id) {
     const res = await fetch("/reservations");
     const reservations = await res.json();
-    const r = reservations.find(item => item.id === id);
+    const r = reservations.find(item => item._id === id);
 
     if (r) {
-        document.getElementById("editLab").value = r.labId;
+        document.getElementById("editLab").value = r.labId._id;
         document.getElementById("editDate").value = r.date;
         document.getElementById("editTime").value = r.time;
         document.getElementById("editSeat").value = r.seat;
