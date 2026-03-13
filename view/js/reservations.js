@@ -32,12 +32,19 @@ document.addEventListener("DOMContentLoaded", async () => {
     // 2. Date Limits
     const today = new Date();
     const minDate = today.toISOString().split("T")[0];
-    const maxDate = new Date(today);
-    maxDate.setDate(today.getDate() + 7);
+    const maxDateObj = new Date(today);
+    maxDateObj.setDate(today.getDate() + 7);
+    const maxDate = maxDateObj.toISOString().split("T")[0];
 
     dateInput.min = minDate;
-    dateInput.max = maxDate.toISOString().split("T")[0];
+    dateInput.max = maxDate;
     dateInput.value = minDate;
+
+    const editDateInput = document.getElementById("editDate");
+    if (editDateInput) {
+        editDateInput.min = minDate;
+        editDateInput.max = maxDate;
+    }
 
     // 3. Generate Time Options
     function generateTimeOptions(){
