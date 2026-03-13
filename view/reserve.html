@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Reserve Slot</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="header">
+    <div class="homenav">
+      <div class="headertext home">Lab Reservation System</div>
+      <nav>
+        <a href="availability.html">View Slot Availability</a>
+        <a href="reserve.html" id="reserveLink">Reserve Slot</a>
+        <a href="reservations.html" id="myReservationsLink">My Reservations</a>
+        <a href="profile.html">User Profile</a>
+        <a href="technician.html" id="techLink" style="display:none;">Technician Dashboard</a>
+      </nav>
+    </div>
+  
+    <input type="button" value="Logout" id="logout" name="logout" onclick="logout()">
+  </div>
+  <div class="container">
+    <div class="reserve">
+      <div class="headertext">Reserve a Slot</div>
+
+        <div class="formlab">
+          <label>Lab:</label>
+          <select id="labSelect">
+            <option value="Gokongwei Lab">Gokongwei Lab</option>
+            <option value="Velasco Lab">Velasco Lab</option>
+            <option value="Andrew Lab">Andrew Lab</option>
+            <option value="St. La Salle Lab">St. La Salle Lab</option>
+          </select>
+        </div>
+
+        <div class="formdate">
+          <label>Date:</label>
+          <input type="date" id="dateSelect">
+        </div>
+
+        <div class="formtime">
+          <label>Time:</label>
+          <select id="timeSelect">
+
+            <!--HARD-CODED TIME SLOTS FOR NOW-->
+            <option value="09:00">09:00</option>
+            <option value="09:30">09:30</option>
+            <option value="10:00">10:00</option>
+            <option value="10:30">10:30</option>
+            <option value="11:00">11:00</option>
+            <option value="11:30">11:30</option>
+            <option value="12:00">12:00</option>
+          </select>
+        </div>
+        
+        <div class="formseat">
+          <label>Seat:</label>
+          <select id="seatSelect">
+
+            <!--HARD-CODED SEAT NUMBERS FOR NOW-->
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+            <option value="8">8</option>
+            <option value="9">9</option>
+            <option value="10">10</option>
+          </select>
+        </div>
+        
+        
+        <label>
+          <input type="checkbox" id="anonymous">
+          Reserve Anonymously
+        </label>
+        
+        <button id="confirmButton">Confirm Reservation</button>
+      
+      
+      <div class="backfooter">
+        <a href="home.html">Back to Home Page</a>
+      </div>
+    </div>
+  </div>
+
+  <script src ="js/data.js"></script>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function(){
+
+      //Role-based restriction
+      const loggedUser =
+        JSON.parse(localStorage.getItem('loggedInUser')) ||
+        JSON.parse(sessionStorage.getItem('loggedInUser'));
+      
+      if (!loggedUser || loggedUser.role !== "student") {
+        alert("Only student accounts can reserve.");
+        window.location.href = "home.html";
+        return;
+      }
+
+      //Restrict dates
+      const dateInput = document.getElementById('dateSelect');
+      // Date today
+      const today = new Date();
+      const minDate = today.toISOString().split('T')[0];
+
+      // Date 7 days from now
+      const maxDate = new Date(today);
+      maxDate.setDate(maxDate.getDate() + 7);
+      const maxDateString = maxDate.toISOString().split('T')[0];
+
+      // Restriction for today and next 7 days
+      dateInput.setAttribute('min', minDate);
+      dateInput.setAttribute('max', maxDateString);
+  
+      // Optionally set today as the default selected date
+      dateInput.value = minDate;
+
+
+      //helper function for local datetime
+      function getLocalDateTime() {
+        const now = new Date();
+        const year = now.getFullYear();
+        const month = String(now.getMonth() + 1).padStart(2, '0');
+        const day = String(now.getDate()).padStart(2, '0');
+        const hours = String(now.getHours()).padStart(2, '0');
+        const minutes = String(now.getMinutes()).padStart(2, '0');
+        return `${year}-${month}-${day} ${hours}:${minutes}`;
+
+      }
+
+
+      //Reservation
+      document.getElementById("confirmButton").addEventListener("click", function() {
+        
+        const labName = document.getElementById("labSelect").value;
+        const date = dateInput.value;
+        const time = document.getElementById("timeSelect").value;
+        const seat = parseInt(document.getElementById("seatSelect").value);
+        const anonymous = document.getElementById("anonymous").checked;
+
+        if (!date || !time) {
+          alert("Please complete all fiels.");
+          return;
+        }
+
+        const lab = labs.find(l => l.name === labName);
+
+        //check seat conflict
+        const seatConflict = reservations.find (r =>
+          r.labId === lab.id &&
+          r.date === date &&
+          r.time === time &&
+          r.seat === seat
+        );
+
+        if(seatConflict) {
+          alert("This seat is already reserved.");
+          return;
+        }
+
+        //if same user books same thing
+        const userConflict = reservations.find(r =>
+          r.userId === loggedUser.id &&
+          r.date === date &&
+          r.time === time
+        );
+
+        if(userConflict) {
+          alert("You already have a reservation at this time.");
+          return;
+        }
+
+        
+        //check slot conflict
+        const slotConflict = reservations.find (r =>
+          r.labId === lab.id &&
+          r.date === date &&
+          r.time === time
+        );
+
+        if (slotConflict) {
+          alert("This slot is already reserved.")
+          return;
+        }
+
+
+        //create new reservation
+        const newReservation = {
+          id: reservations.length + 1,
+          userId: loggedUser.id,
+          labId: lab.id,
+          seat: 1,
+          date: date,
+          time: time,
+          anonymous: anonymous,
+          dateRequested: getLocalDateTime()
+        };
+
+
+        reservations.push(newReservation);
+        localStorage.setItem("reservations", JSON.stringify(reservations));
+
+        alert("Reservation successful!")
+        window.location.href = "reservations.html";
+      });
+
+    });
+
+    
+  </script>
+
+</body>
+</html>
