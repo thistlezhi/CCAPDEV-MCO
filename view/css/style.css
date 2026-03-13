@@ -169,6 +169,10 @@ nav a {
   margin-bottom: 10px;
 }
 
+.availability .tablescroll{
+  height: 275px;
+}
+
 .resultscroll{
   width: 100%;
   height: 225px;
