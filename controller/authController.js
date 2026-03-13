@@ -27,6 +27,7 @@ router.post('/signup', async (req, res) => {
 
     try {
         const { fName, lName, email, password, role } = req.body;
+        const fullName = `${fName} ${lName}`;
 
     //check if already exists through email
     const existingUser = await Users.findOne({email});
@@ -38,23 +39,55 @@ router.post('/signup', async (req, res) => {
         });
     }
 
-    const newUser = {
-        name: `${fName} ${lName}`,
+    const newUser = new Users({
+        name: fullName,
         email,
         password,
         role,
         description: ""
-    };
+    });
 
     await newUser.save();
 
-    res.json({
-        success: true,
-        user: newUser
-    });
+    res.status(201).json({ success: true, user: newUser });
+    } catch (err) {
+        res.status(500).json({ success: false, message: "Server error" });
+    }
+});
+//Check email route
+router.post('/check-email', async (req, res) => {
+    try {
+        const user = await Users.findOne({ email: req.body.email });
+        if (user) {
+            return res.json({ exists: true });
+        }
+        res.json({ exists: false });
     } catch (err) {
         res.status(500).json({ success: false, message: "Server error" });
     }
 });
 
+// Password reset route
+router.put('/reset-password', async (req, res) => {
+    
+    const { email, password } = req.body; 
+    
+    try {
+        
+        const user = await Users.findOneAndUpdate(
+            { email: email },
+            { password: password }, 
+            { new: true }
+        );
+
+        if (!user) {
+            return res.status(404).json({ success: false, message: "User not found" });
+        }
+
+        res.json({ success: true });
+    } catch (err) {
+        console.error("Update Error:", err);
+        res.status(500).json({ success: false, message: "Server error" });
+    }
+});
 module.exports = router;
