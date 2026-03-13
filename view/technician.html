@@ -125,7 +125,7 @@
     </div>
 
   </div>
-    <script src="js/data.js"></script>
+
     <script>
 
       //helper function for local datetime
@@ -159,23 +159,61 @@
   
   
   // Populate table with all reservations
-  reservations.forEach(r => {
-    const user = users.find(u => u.id === r.userId);
-    const lab = labs.find(l => l.id === r.labId);
-    
-    const row = table.insertRow();
-    row.insertCell().textContent = user.name;
-    row.insertCell().textContent = lab.name;
-    row.insertCell().textContent = r.seat;
-    row.insertCell().textContent = r.date;
-    row.insertCell().textContent = r.time;
-    row.insertCell().textContent = r.dateRequested || "N/A";
-    
-    const actionCell = row.insertCell();
-    actionCell.innerHTML =
-    `<button onclick="openEditModal(${r.id})">Edit</button>
-     <button onclick="removeReservation(${r.id})">Remove</button>`;
+  async function loadReservations() {
+    const res = await fetch("/reservations");
+    const reservations = await res.json();
+  
+    table.innerHTML = `
+    <tr>
+      <th>User</th>
+      <th>Lab</th>
+      <th>Seat</th>
+      <th>Date</th>
+      <th>Time</th>
+      <th>Date Requested</th>
+      <th>Actions</th>
+    </tr>
+    `;
+  
+    reservations.forEach(r => {
+      const row = table.insertRow();
+
+      const userName = r.anonymous ? "Anonymous" : r.userId?.name || "Unknown";
+      const labName = r.labId?.name || "Unknown";
+
+      row.insertCell().textContent = userName;
+      row.insertCell().textContent = labName;
+      row.insertCell().textContent = r.seat;
+      row.insertCell().textContent = r.date;
+      row.insertCell().textContent = r.time;
+      row.insertCell().textContent = new Date(r.dateRequested).toLocaleString();
+
+      row.insertCell().innerHTML = `
+        <button onclick="openEditModal('${r._id}')">Edit</button>
+        <button onclick="removeReservation('${r._id}')">Remove</button>
+      `;
     });
+  }
+
+  loadLabs();
+  loadReservations();
+
+  async function loadLabs() {
+    const res = await fetch("/labs");
+    const labs = await res.json();
+
+    const labSelect = document.getElementById("editLab");
+
+    labSelect.innerHTML = "";
+
+    labs.forEach(lab => {
+      const option = document.createElement("option");
+      option.value = lab._id;
+      option.textContent = lab.name;
+      
+      labSelect.appendChild(option);
+    });
+  }
     
     // lab dropdown for the edit modal
     function populateLabDropdown() {
@@ -190,27 +228,19 @@
     }
     
     // Open edit modal - technicians can edit any reservation
-    function openEditModal(id) {
-      currentEditingReservation = reservations.find(r => r.id === id);
-      
-      if (!currentEditingReservation) {
-        alert("Reservation not found");
-        return;
-      }
-      
-      const user = users.find(u => u.id === currentEditingReservation.userId);
-      
-      setDateLimits();
-      populateLabDropdown();
-      
-  document.getElementById("editUser").value = user.name;
-  document.getElementById("editLab").value = currentEditingReservation.labId;
-  document.getElementById("editDate").value = currentEditingReservation.date;
-  document.getElementById("editTime").value = currentEditingReservation.time;
-  document.getElementById("editSeat").value = currentEditingReservation.seat;
+    async function openEditModal(id) {
+      const res = await fetch(`/reservations/${id}`);
+      const r = await res.json();
   
-  editModal.style.display = "block";
-}
+      document.getElementById("editUser").value = r.anonymous ? "Anonymous" : r.userId.name;
+      document.getElementById("editLab").value = r.labId._id;
+      document.getElementById("editDate").value = r.date;
+      document.getElementById("editTime").value = r.time;
+      document.getElementById("editSeat").value = r.seat;
+
+      editForm.dataset.currentId = id;
+      editModal.style.display = "block";
+    }
 
 // close edit modal
 function closeEditModal() {
@@ -274,13 +304,17 @@ window.onclick = function(event) {
   }
 }
 
-function removeReservation(id) {
-  if (confirm("Are you sure you want to remove this reservation?")) {
-    reservations = reservations.filter(r => r.id !== id);
-    saveReservations();
-    location.reload();
-  }
+async function removeReservation(id) {
+
+  if (!confirm("Remove this reservation?")) return;
+
+  await fetch(`/reservations/${id}`, {
+    method: "DELETE"
+  });
+
+  location.reload();
 }
+
 </script>
 
 <script>
