@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Reservations</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+  <div class="container">
+    <div class="reservations">
+      <div class="headertext">Reservations</div>
+
+      <!--Create Reservations-->
+      <div class="reserve">
+        <div class="headertext">Reserve a Slot</div>
+        <label>Lab:</label>
+        <select id="labSelect"></select>
+        <label>Date:</label>
+        <input type="date" id="dateSelect">
+
+
+        <label>Time:</label>
+        <select id="timeSelect"></select>
+
+
+        <label>Seat:</label>
+        <select id="seatSelect"></select>
+
+        <label>
+          <input type="checkbox" id="anonymous">
+          Reserve Anonymously
+        </label>
+
+        <button id="confirmButton">Confirm Reservation</button>
+      </div>
+
+
+      <!--View Reservations-->
+
+      <div class="tablescroll">
+        <table id="resTable">
+          <tr>
+            <th>Lab</th>
+            <th>Seat</th>
+            <th>Date</th>
+            <th>Time</th>
+            <th>Date Requested</th>
+            <th>Actions</th>
+          </tr>
+        </table>
+      </div>
+
+
+      <!--Edit Reservations-->
+
+      <div id="editModal" class="modal">
+        <div class="modal-content">
+          <h2>Edit Reservation</h2>
+
+          <form id="editForm">
+            <label>Lab:</label>
+            <select id="editLab"></select>
+
+            <label>Date:</label>
+            <input type="date" id="editDate" required>
+
+            <label>Time:</label>
+            <input type="time" id="editTime" required>
+
+            <label>Seat:</label>
+            <input type="number" id="editSeat" min="1" required>
+
+            <button type="button" onclick="closeEditModal()">Cancel</button>
+            <button type="submit">Save Changes</button>
+          </form>
+        </div>
+      </div>
+
+      <div class="backfooter">
+        <a href="home.html">Back to Home Page</a>
+      </div>
+
+    </div>
+  </div>
+
+  <script src="js/authGuard.js"></script>
+  <script src="js/reservations.js"></script>
+
+</body>
+</html>
