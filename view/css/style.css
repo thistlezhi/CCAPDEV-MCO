@@ -233,7 +233,6 @@ th, td {
 .reservations{
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
   gap:10px;
   
   width: 100vh;
@@ -245,7 +244,14 @@ th, td {
 }
 
 .reservations .tablescroll{
-  height: 500px;
+  width: 100%;
+}
+
+.formflex{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
 }
 
 /*Profile Page*/

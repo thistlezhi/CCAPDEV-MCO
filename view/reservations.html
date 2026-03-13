@@ -6,37 +6,44 @@
 </head>
 
 <body>
-
   <div class="container">
     <div class="reservations">
+
       <div class="headertext">Reservations</div>
 
-      <!--Create Reservations-->
-      <div class="reserve">
-        <div class="headertext">Reserve a Slot</div>
-        <label>Lab:</label>
-        <select id="labSelect"></select>
-        <label>Date:</label>
-        <input type="date" id="dateSelect">
+      <div class="formflex">
+        <div class="reserve">
+          <div class="headertext">Reserve a Slot</div>
+          <div class="formlab">
+            <label>Lab:</label>
+            <select id="labSelect"></select>
+          </div>
 
+          <div class="formdate">
+            <label>Date:</label>
+            <input type="date" id="dateSelect">
+          </div>
 
-        <label>Time:</label>
-        <select id="timeSelect"></select>
+          <div class="formtime">
+            <label>Time:</label>
+            <select id="timeSelect"></select>
+          </div>
 
+          <div class="formseat">
+            <label>Seat:</label>
+            <select id="seatSelect"></select>
+          </div>
 
-        <label>Seat:</label>
-        <select id="seatSelect"></select>
+          <label>
+            <input type="checkbox" id="anonymous">
+            Reserve Anonymously
+          </label>
 
-        <label>
-          <input type="checkbox" id="anonymous">
-          Reserve Anonymously
-        </label>
+          <button id="confirmButton">Confirm Reservation</button>
+        </div>
+      </div> 
 
-        <button id="confirmButton">Confirm Reservation</button>
-      </div>
-
-
-      <!--View Reservations-->
+      
 
       <div class="tablescroll">
         <table id="resTable">
@@ -50,9 +57,6 @@
           </tr>
         </table>
       </div>
-
-
-      <!--Edit Reservations-->
 
       <div id="editModal" class="modal">
         <div class="modal-content">
