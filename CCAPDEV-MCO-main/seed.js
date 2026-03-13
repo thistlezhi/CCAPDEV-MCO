@@ -28,7 +28,7 @@ const seedData = async () => {
 
         // 3. Insert Labs
         const labs = [
-            { name: "Gokongwei Lab", totalSeats: 10 },
+            { name: "Gokongwei Lab", totalSeats: 10 }, 
             { name: "Velasco Lab", totalSeats: 8 },
             { name: "Andrew Lab", totalSeats: 12 },
             { name: "St. La Salle Lab", totalSeats: 15 }

@@ -1,12 +1,18 @@
 
 const express = require('express');
 const path = require('path');
+const mongoose = require('mongoose');
 
 const app = express();
 const PORT = 3000;
 
+mongoose.connect('mongodb://127.0.0.1:27017/mco_database')
+    .then(() => console.log("Connected to MongoDB..."))
+    .catch(err => console.error("Connection error:", err));
+
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
+
 
 app.use(express.static(path.join(__dirname,'view')));
 

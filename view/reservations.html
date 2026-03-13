@@ -1,260 +1,91 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>My Reservations</title>
+  <title>Reservations</title>
   <link rel="stylesheet" href="css/style.css">
 </head>
+
 <body>
-  <div class="header">
-    <div class="homenav">
-      <div class="headertext home">Lab Reservation System</div>
-      <nav>
-        <a href="availability.html">View Slot Availability</a>
-        <a href="reserve.html" id="reserveLink">Reserve Slot</a>
-        <a href="reservations.html" id="myReservationsLink">My Reservations</a>
-        <a href="profile.html">User Profile</a>
-        <a href="technician.html" id="techLink" style="display:none;">Technician Dashboard</a>
-      </nav>
-    </div>
-  
-    <input type="button" value="Logout" id="logout" name="logout" onclick="logout()">
-  </div>
+
   <div class="container">
     <div class="reservations">
-      <div>
-        <div class="headertext">My Reservations</div>
-        <div class="tablescroll">
-          <table id="resTable">
-            <tr>
-              <th>Lab</th>
-              <th>Seat</th>
-              <th>Date</th>
-              <th>Time</th>
-              <th>Date Requested</th>
-              <th>Actions</th>
-            </tr>
-          </table>
-        </div>
+      <div class="headertext">Reservations</div>
+
+      <!--Create Reservations-->
+      <div class="reserve">
+        <div class="headertext">Reserve a Slot</div>
+        <label>Lab:</label>
+        <select id="labSelect"></select>
+        <label>Date:</label>
+        <input type="date" id="dateSelect">
+
+
+        <label>Time:</label>
+        <select id="timeSelect"></select>
+
+
+        <label>Seat:</label>
+        <select id="seatSelect"></select>
+
+        <label>
+          <input type="checkbox" id="anonymous">
+          Reserve Anonymously
+        </label>
+
+        <button id="confirmButton">Confirm Reservation</button>
       </div>
-      
-      <!-- Edit Reservation Modal -->
+
+
+      <!--View Reservations-->
+
+      <div class="tablescroll">
+        <table id="resTable">
+          <tr>
+            <th>Lab</th>
+            <th>Seat</th>
+            <th>Date</th>
+            <th>Time</th>
+            <th>Date Requested</th>
+            <th>Actions</th>
+          </tr>
+        </table>
+      </div>
+
+
+      <!--Edit Reservations-->
+
       <div id="editModal" class="modal">
         <div class="modal-content">
-          <div class="modal-header">
-            <h2>Edit Reservation</h2>
-            <button class="close-btn" onclick="closeEditModal()">&times;</button>
-          </div>
-      
-          <form class="modal-form" id="editForm">
-            <div class="form-group">
-              <label for="editLab">Lab:</label>
-              <select id="editLab" required>
-                <option>Loading labs...</option>
-              </select>
-            </div>
-      
-            <div class="form-group">
-              <label for="editDate">Date:</label>
-              <input type="date" id="editDate" required>
-            </div>
-      
-            <div class="form-group">
-              <label for="editTime">Time:</label>
-              <input type="time" id="editTime" required>
-            </div>
-            
-            <div class="form-group">
-              <label for="editSeat">Seat:</label>
-              <input type="number" id="editSeat" required min="1">
-            </div>
-            
-            <div class="modal-actions">
-              <button type="button" class="cancel-btn" onclick="closeEditModal()">Cancel</button>
-              <button type="submit" class="save-btn">Save Changes</button>
-            </div>
+          <h2>Edit Reservation</h2>
+
+          <form id="editForm">
+            <label>Lab:</label>
+            <select id="editLab"></select>
+
+            <label>Date:</label>
+            <input type="date" id="editDate" required>
+
+            <label>Time:</label>
+            <input type="time" id="editTime" required>
+
+            <label>Seat:</label>
+            <input type="number" id="editSeat" min="1" required>
+
+            <button type="button" onclick="closeEditModal()">Cancel</button>
+            <button type="submit">Save Changes</button>
           </form>
         </div>
       </div>
-      
-      
+
       <div class="backfooter">
         <a href="home.html">Back to Home Page</a>
       </div>
+
     </div>
-    
   </div>
 
-
-<script src="js/data.js"></script>
-
-<script>
-const loggedUser = 
-  JSON.parse(localStorage.getItem('loggedInUser')) ||
-  JSON.parse(sessionStorage.getItem('loggedInUser'));
-
-if (!loggedUser || loggedUser.role !== "student") {
-  alert("Only student accounts can see their reservations.");
-  window.location.href = "home.html";
-}
-
-const table = document.getElementById("resTable");
-const editModal = document.getElementById("editModal");
-const editForm = document.getElementById("editForm");
-let currentEditingReservation = null;
-
-
-// Populate table with user's reservations
-
-reservations
-  .filter(r => r.userId === loggedUser.id)
-  .forEach(r => {
-    const lab = labs.find(l => l.id === r.labId);
-    const row = table.insertRow();
-
-    row.insertCell().textContent = lab.name;
-    row.insertCell().textContent = r.seat;
-    row.insertCell().textContent = r.date;
-    row.insertCell().textContent = r.time;
-    row.insertCell().textContent = r.dateRequested;
-
-    const actionCell = row.insertCell();
-    actionCell.innerHTML =
-  
-      `<button onclick="openEditModal(${r.id})">Edit</button>
-       <button onclick="cancelReservation(${r.id})">Cancel</button>`;
-  });
-
-
-// Populate lab dropdown
-function populateLabDropdown() {
-  const labSelect = document.getElementById("editLab");
-  labSelect.innerHTML = '';
-  labs.forEach(lab => {
-    const option = document.createElement("option");
-    option.value = lab.id;
-    option.textContent = lab.name;
-    labSelect.appendChild(option);
-  });
-}
-
-// Open edit modal
-function openEditModal(id) {
-  currentEditingReservation = reservations.find(r => r.id === id);
-  
-  if (!currentEditingReservation) {
-    alert("Reservation not found");
-    return;
-  }
-
-  // Check if user owns this reservation
-  if (currentEditingReservation.userId !== loggedUser.id) {
-    alert("You can only edit your own reservations");
-    return;
-  }
-
-  populateLabDropdown();
-  setDateLimits();
-  
-  document.getElementById("editLab").value = currentEditingReservation.labId;
-  document.getElementById("editDate").value = currentEditingReservation.date;
-  document.getElementById("editTime").value = currentEditingReservation.time;
-  document.getElementById("editSeat").value = currentEditingReservation.seat;
-  
-  editModal.style.display = "block";
-}
-
-// Close edit modal
-function closeEditModal() {
-  editModal.style.display = "none";
-  currentEditingReservation = null;
-  editForm.reset();
-}
-
-function setDateLimits() {
-    const dateInput = document.getElementById("editDate");
-    const today = new Date();
-    
-    const minDate = today.toISOString().split('T')[0];
-    
-    const maxDate = new Date(today);
-    maxDate.setDate(today.getDate() + 7);
-    const maxDateString = maxDate.toISOString().split('T')[0];
-
-    dateInput.setAttribute("min", minDate);
-    dateInput.setAttribute("max", maxDateString);
-}
-
-// Handle form submission
-editForm.addEventListener("submit", function(e) {
-  e.preventDefault();
-
-  const labId = parseInt(document.getElementById("editLab").value);
-  const date = document.getElementById("editDate").value;
-  const time = document.getElementById("editTime").value;
-  const seat = parseInt(document.getElementById("editSeat").value);
-
-  const seatConflict = reservations.find(r =>
-    r.id !== currentEditingReservation.id &&
-    r.labId === labId &&
-    r.date === date &&
-    r.time === time &&
-    r.seat === seat
-  );
-
-  if (seatConflict) {
-    alert("This seat is already reserved.");
-    return;
-  }
-
-  const userConflict = reservations.find(r =>
-    r.id !== currentEditingReservation.id &&
-    r.userId === loggedUser.id &&
-    r.date === date &&
-    r.time === time
-  );
-
-  const now = new Date();
-  const timestamp = now.getFullYear() + "-" + 
-                    String(now.getMonth() + 1).padStart(2, '0') + "-" + 
-                    String(now.getDate()).padStart(2, '0') + " " + 
-                    String(now.getHours()).padStart(2, '0') + ":" + 
-                    String(now.getMinutes()).padStart(2, '0');
-  
-  currentEditingReservation.dateRequested = timestamp + " (Edited)";
-
-  if (userConflict) {
-    alert("You already have a reservation at this time.");
-    return;
-  }
-
-  // Update reservation
-  currentEditingReservation.labId = labId;
-  currentEditingReservation.date = date;
-  currentEditingReservation.time = time;
-  currentEditingReservation.seat = seat;
-
-  saveReservations();
-  closeEditModal();
-  location.reload();
-  });
-
-  //cancel reservation
-  function cancelReservation(id) {
-    if(confirm("Are you sure you want to cancel this reservation?")) {
-      reservations = reservations.filter(r => r.id !== id);
-      saveReservations();
-      location.reload();
-    }
-  }
-
-// Close modal when clicking outside of it
-window.onclick = function(event) {
-  if (event.target == editModal) {
-    closeEditModal();
-  }
-}
-
-</script>
+  <script src="js/authGuard.js"></script>
+  <script src="js/reservations.js"></script>
 
 </body>
 </html>
