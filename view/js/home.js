@@ -1,5 +1,5 @@
 
-  
+
 // Restricted technician.html to technicians only and restricted reserve slots n my reservations to students only
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -15,6 +15,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (loggedUser && loggedUser.role === "technician") {
         document.getElementById("techLink").style.display = "inline";
+
+        const resLink = document.getElementById("ReservationsLink");
+        if (resLink) {
+            resLink.style.display = "none";
+        }
     }
 });
 
