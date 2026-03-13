@@ -1,21 +1,29 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>Technician Dashboard</title>
-    <link rel="stylesheet" href="css/style.css">
+<head>
+  <title>Technician Dashboard</title>
+  <link rel="stylesheet" href="css/style.css">
 </head>
+
 <body>
-  
-  <div class="container">
-    <div class="technician">
-      <div>
-        <div class="headertext">Technician Controls</div>
-        <button onclick="openWalkinModal()">Reserve for Walk-in</button>
-      </div>
-      <div>
-        <div class="headertext">All Reservations</div>
-        <div class="tablescroll">
-          <table id="techTable">
+
+<div class="container">
+
+  <div class="technician">
+
+    <div>
+      <div class="headertext">Technician Controls</div>
+      <button id="walkinBtn">Reserve for Walk-in</button>
+    </div>
+
+    <div>
+      <div class="headertext">All Reservations</div>
+
+      <div class="tablescroll">
+
+        <table id="techTable">
+
+          <thead>
             <tr>
               <th>User</th>
               <th>Lab</th>
@@ -25,399 +33,105 @@
               <th>Date Requested</th>
               <th>Actions</th>
             </tr>
-          </table>
-        </div>
+          </thead>
+
+          <tbody></tbody>
+
+        </table>
+
       </div>
-      
-      
-      
-      <!-- Edit Reservation Modal -->
-      <div id="editModal" class="modal">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h2>Edit Reservation</h2>
-            <button class="close-btn" onclick="closeEditModal()">&times;</button>
+
+    </div>
+
+
+    <!-- EDIT MODAL -->
+    <div id="editModal" class="modal">
+
+      <div class="modal-content">
+
+        <div class="modal-header">
+          <h2>Edit Reservation</h2>
+          <button class="close-btn" id="closeEdit">&times;</button>
+        </div>
+
+        <form id="editForm">
+
+          <label>User</label>
+          <input id="editUser" disabled>
+
+          <label>Lab</label>
+          <select id="editLab"></select>
+
+          <label>Date</label>
+          <input type="date" id="editDate">
+
+          <label>Time</label>
+          <input type="time" id="editTime">
+
+          <label>Seat</label>
+          <input type="number" id="editSeat" min="1">
+
+          <div class="modal-actions">
+            <button type="button" id="cancelEdit">Cancel</button>
+            <button type="submit">Save Changes</button>
           </div>
-          <form class="modal-form" id="editForm">
-            <div class="form-group">
-              <label for="editUser">User:</label>
-              <input type="text" id="editUser" disabled>
-            </div>
-            <div class="form-group">
-              <label for="editLab">Lab:</label>
-              <select id="editLab" required>
-                <option>Loading labs...</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label for="editDate">Date:</label>
-              <input type="date" id="editDate" required>
-            </div>
-            <div class="form-group">
-              <label for="editTime">Time:</label>
-              <input type="time" id="editTime" required>
-            </div>
-            <div class="form-group">
-              <label for="editSeat">Seat:</label>
-              <input type="number" id="editSeat" required min="1">
-            </div>
-            <div class="modal-actions">
-              <button type="button" class="cancel-btn" onclick="closeEditModal()">Cancel</button>
-              <button type="submit" class="save-btn">Save Changes</button>
-            </div>
-          </form>
-        </div>
+
+        </form>
+
       </div>
-      
-      
-      
-      <!-- Walk-in Reservation Modal -->
-      <div id="walkinModal" class="modal">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h2>Reserve for Walk-in</h2>
-            <button class="close-btn" onclick="closeWalkinModal()">&times;</button>
+
+    </div>
+
+
+
+    <!-- WALK-IN MODAL -->
+    <div id="walkinModal" class="modal">
+
+      <div class="modal-content">
+
+        <div class="modal-header">
+          <h2>Reserve for Walk-in</h2>
+          <button class="close-btn" id="closeWalkin">&times;</button>
+        </div>
+
+        <form id="walkinForm">
+
+          <label>Student</label>
+          <select id="walkinStudent"></select>
+
+          <label>Lab</label>
+          <select id="walkinLab"></select>
+
+          <label>Date</label>
+          <input type="date" id="walkinDate">
+
+          <label>Time</label>
+          <select id="walkinTime" required></select>
+
+          <label>Seat</label>
+          <input type="number" id="walkinSeat" min="1">
+
+          <div class="modal-actions">
+            <button type="button" id="cancelWalkin">Cancel</button>
+            <button type="submit">Create Reservation</button>
           </div>
-          <form class="modal-form" id="walkinForm">
-            <div class="form-group">
-              <label for="walkinStudent">Student:</label>
-              <select id="walkinStudent" required>
-                <option>Loading students...</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label for="walkinLab">Lab:</label>
-              <select id="walkinLab" required>
-                <option>Loading labs...</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label for="walkinDate">Date:</label>
-              <input type="date" id="walkinDate" required>
-            </div>
-            <div class="form-group">
-              <label for="walkinTime">Time:</label>
-              <select id="walkinTime" required>
-                <option>09:00</option>
-                <option>09:30</option>
-                <option>10:00</option>
-                <option>10:30</option>
-                <option>11:00</option> 
-                <option>11:30</option>
-                <option>12:00</option> <!-- add more time slots if needed, not sure sa time options -->
-              </select>
-            </div>
-            <div class="form-group">
-              <label for="walkinSeat">Seat:</label>
-              <input type="number" id="walkinSeat" required min="1">
-            </div>
-            <div class="modal-actions">
-              <button type="button" class="cancel-btn" onclick="closeWalkinModal()">Cancel</button>
-              <button type="submit" class="save-btn">Create Reservation</button>
-            </div>
-          </form>
-        </div>
+
+        </form>
+
       </div>
-      
-      <div class="backfooter">
-        <a href="home.html">Back to Home Page</a>
-      </div>
+
+    </div>
+
+
+    <div class="backfooter">
+      <a href="home.html">Back to Home Page</a>
     </div>
 
   </div>
 
-    <script>
+</div>
 
-      //helper function for local datetime
-      function getLocalDateTime() {
-        const now = new Date();
-        const year = now.getFullYear();
-        const month = String(now.getMonth() + 1).padStart(2, '0');
-        const day = String(now.getDate()).padStart(2, '0');
-        const hours = String(now.getHours()).padStart(2, '0');
-        const minutes = String(now.getMinutes()).padStart(2, '0');
-        return `${year}-${month}-${day} ${hours}:${minutes}`;
-
-      }
-
-      /*only allow technicians here
-      
-      const loggedUser = 
-      JSON.parse(localStorage.getItem('loggedInUser')) ||
-      JSON.parse(sessionStorage.getItem('loggedInUser'));
-      
-      if (!loggedUser || loggedUser.role !=="technician") {
-        alert("Access denied. This is for technicians only.")
-    window.location.href = "home.html";
-  }
-    */
-  
-  const table = document.getElementById("techTable");
-  const editModal = document.getElementById("editModal");
-  const editForm = document.getElementById("editForm");
-  let currentEditingReservation = null;
-  
-  
-  // Populate table with all reservations
-  async function loadReservations() {
-    const res = await fetch("/reservations");
-    const reservations = await res.json();
-  
-    table.innerHTML = `
-    <tr>
-      <th>User</th>
-      <th>Lab</th>
-      <th>Seat</th>
-      <th>Date</th>
-      <th>Time</th>
-      <th>Date Requested</th>
-      <th>Actions</th>
-    </tr>
-    `;
-  
-    reservations.forEach(r => {
-      const row = table.insertRow();
-
-      const userName = r.anonymous ? "Anonymous" : r.userId?.name || "Unknown";
-      const labName = r.labId?.name || "Unknown";
-
-      row.insertCell().textContent = userName;
-      row.insertCell().textContent = labName;
-      row.insertCell().textContent = r.seat;
-      row.insertCell().textContent = r.date;
-      row.insertCell().textContent = r.time;
-      row.insertCell().textContent = new Date(r.dateRequested).toLocaleString();
-
-      row.insertCell().innerHTML = `
-        <button onclick="openEditModal('${r._id}')">Edit</button>
-        <button onclick="removeReservation('${r._id}')">Remove</button>
-      `;
-    });
-  }
-
-  loadLabs();
-  loadReservations();
-
-  async function loadLabs() {
-    const res = await fetch("/labs");
-    const labs = await res.json();
-
-    const labSelect = document.getElementById("editLab");
-
-    labSelect.innerHTML = "";
-
-    labs.forEach(lab => {
-      const option = document.createElement("option");
-      option.value = lab._id;
-      option.textContent = lab.name;
-      
-      labSelect.appendChild(option);
-    });
-  }
-    
-    // lab dropdown for the edit modal
-    function populateLabDropdown() {
-      const labSelect = document.getElementById("editLab");
-      labSelect.innerHTML = '';
-      labs.forEach(lab => {
-        const option = document.createElement("option");
-        option.value = lab.id;
-        option.textContent = lab.name;
-        labSelect.appendChild(option);
-      });
-    }
-    
-    // Open edit modal - technicians can edit any reservation
-    async function openEditModal(id) {
-      const res = await fetch(`/reservations/${id}`);
-      const r = await res.json();
-  
-      document.getElementById("editUser").value = r.anonymous ? "Anonymous" : r.userId.name;
-      document.getElementById("editLab").value = r.labId._id;
-      document.getElementById("editDate").value = r.date;
-      document.getElementById("editTime").value = r.time;
-      document.getElementById("editSeat").value = r.seat;
-
-      editForm.dataset.currentId = id;
-      editModal.style.display = "block";
-    }
-
-// close edit modal
-function closeEditModal() {
-  editModal.style.display = "none";
-  currentEditingReservation = null;
-  editForm.reset();
-}
-
-function setDateLimits() {
-    const dateInput = document.getElementById("editDate");
-    const today = new Date();
-    
-    const minDate = today.toISOString().split('T')[0];
-
-    dateInput.setAttribute("min", minDate);
-    dateInput.removeAttribute("max");
-}
-
-// handle form submission
-editForm.addEventListener("submit", function(e) {
-  e.preventDefault();
-  
-  if (!currentEditingReservation) return;
-  
-  const labId = parseInt(document.getElementById("editLab").value);
-  const date = document.getElementById("editDate").value;
-  const time = document.getElementById("editTime").value;
-  const seat = parseInt(document.getElementById("editSeat").value);
-  
-  const isConflict = reservations.some(r => 
-    r.labId === labId && 
-    r.date === date && 
-    r.time === time && 
-    r.seat === seat && 
-    r.id !== currentEditingReservation.id
-  );
-
-  if (isConflict) {
-    alert("Error: This seat is already taken for the selected lab, date, and time.");
-    return; 
-  }
-
-  // update reservation
-  currentEditingReservation.labId = labId;
-  currentEditingReservation.date = date;
-  currentEditingReservation.time = time;
-  currentEditingReservation.seat = seat;
-
-  currentEditingReservation.dateRequested = getLocalDateTime() + " (Edited)";
-
-
-  saveReservations();
-  closeEditModal();
-  location.reload();
-});
-
-// Close modal when clicking outside of it
-window.onclick = function(event) {
-  if (event.target == editModal) {
-    closeEditModal();
-  }
-}
-
-async function removeReservation(id) {
-
-  if (!confirm("Remove this reservation?")) return;
-
-  await fetch(`/reservations/${id}`, {
-    method: "DELETE"
-  });
-
-  location.reload();
-}
-
-</script>
-
-<script>
-// walk-in reservation logic for technicians
-const walkinModal = document.getElementById('walkinModal');
-const walkinForm = document.getElementById('walkinForm');
-
-function populateStudentsDropdown() {
-  const sel = document.getElementById('walkinStudent');
-  sel.innerHTML = '';
-  
-  // Only show users with role 'student'
-  users.filter(u => u.role === 'student').forEach(u => {
-    const opt = document.createElement('option');
-    opt.value = u.id;
-    opt.textContent = u.name;
-    sel.appendChild(opt);
-  });
-}
-
-function populateWalkinLabDropdown() {
-  const sel = document.getElementById('walkinLab');
-  sel.innerHTML = '';
-  labs.forEach(l => {
-    const opt = document.createElement('option');
-    opt.value = l.id;
-    opt.textContent = l.name;
-    sel.appendChild(opt);
-  });
-}
-
-function openWalkinModal() {
-  populateStudentsDropdown();
-  populateWalkinLabDropdown();
-  limitWalkinDate();
-  walkinModal.style.display = 'block';
-}
-
-function closeWalkinModal() {
-  walkinModal.style.display = 'none';
-  walkinForm.reset();
-}
-
-function isSlotTaken(labId, date, time, seat, excludeId = null) {
-  return reservations.some(res => 
-    res.labId === labId &&
-    res.date === date &&
-    res.time === time &&
-    res.seat === seat &&
-    res.id !== excludeId // Skip the current reservation if we are editing
-  );
-}
-
-function limitWalkinDate() {
-  const dateInput = document.getElementById('walkinDate');
-  const today = new Date();
-  const minDate = today.toISOString().split('T')[0];
-  const maxDate = new Date(today);
-  maxDate.setDate(maxDate.getDate() + 7);
-  const maxDateString = maxDate.toISOString().split('T')[0];
-  dateInput.setAttribute('min', minDate);
-  dateInput.setAttribute('max', maxDateString);
-  dateInput.value = minDate;
-}
-
-walkinForm.addEventListener('submit', function(e) {
-  e.preventDefault();
-  const userId = parseInt(document.getElementById('walkinStudent').value);
-  const labId = parseInt(document.getElementById('walkinLab').value);
-  const date = document.getElementById('walkinDate').value;
-  const time = document.getElementById('walkinTime').value;
-  const seat = parseInt(document.getElementById('walkinSeat').value);
-
-  // CHECK FOR OVERLAP
-  if (isSlotTaken(labId, date, time, seat)) {
-    alert("Error: This seat is already reserved for the selected lab, date, and time.");
-    return; // Stop the function here
-  }
-
-  // create new id
-  const newId = reservations.length ? Math.max(...reservations.map(r => r.id)) + 1 : 1;
-  const newRes = {
-    id: newId,
-    userId: userId,
-    labId: labId,
-    seat: seat,
-    date: date,
-    time: time,
-    anonymous: false,
-    dateRequested: getLocalDateTime()
-  };
-
-  reservations.push(newRes);
-  saveReservations();
-  closeWalkinModal();
-  location.reload();
-});
-
-// close modal when clicking outside
-window.addEventListener('click', function(event) {
-  if (event.target === walkinModal) closeWalkinModal();
-});
-</script>
+<script src="js/technician.js"></script>
 
 </body>
 </html>
