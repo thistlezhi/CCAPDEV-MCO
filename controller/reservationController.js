@@ -1,75 +1,126 @@
 const express = require('express');
 const router = express.Router();
 
-const Reservations = require('../model/Reservations');
+const Reservation = require('../model/Reservations');
 
-// GET all reservations
-router.get('/reservations', (req, res) => {
-    res.json(Reservations.getAll());
-});
 
-// GET one reservation
-router.get('/reservations/:id', (req, res) => {
-    const reservation = Reservations.getById(req.params.id);
+//GET reservations
+router.get('/reservations', async (req, res) => {
 
-    if (!reservation) {
-        return res.status(404).json({ message: "Reservation not found" });
+    try {
+
+        const reservations = await Reservation
+            .find()
+            .populate("userId")
+            .populate("labId");
+
+        res.json(reservations);
+
+    } catch (err) {
+        res.status(500).json({ message: err.message });
     }
 
-    res.json(reservation);
 });
 
-// CREATE reservation
-router.post('/reservations', (req, res) => {
 
-    const { userId, labId, seat, date, time, anonymous } = req.body;
+//GET one reservation
+router.get('/reservations/:id', async (req, res) => {
 
-    //check if seat is taken
+    try {
 
-    const existing = Reservations.getAll().find (r =>
-        r.labId == labId &&
-        r.seat == seat &&
-        r.date == date &&
-        r.time == time
-    );
+        const reservation = await Reservation
+            .findById(req.params.id)
+            .populate("userId")
+            .populate("labId");
 
-    if(existing) {
-        return res.json({
-            success: false,
-            message: "Slot already reserved."
+        if (!reservation) {
+            return res.status(404).json({ message: "Reservation not found" });
+        }
+
+        res.json(reservation);
+
+    } catch (err) {
+        res.status(500).json({ message: err.message });
+    }
+
+});
+
+
+//CREATE reservation
+router.post('/reservations', async (req, res) => {
+
+    try {
+
+        const { userId, labId, seat, date, time, anonymous } = req.body;
+
+        // check if seat already reserved
+        const existing = await Reservation.findOne({
+            labId,
+            seat,
+            date,
+            time
         });
+
+        if (existing) {
+            return res.json({
+                success: false,
+                message: "Slot already reserved."
+            });
+        }
+
+        const newReservation = await Reservation.create({
+            userId,
+            labId,
+            seat,
+            date,
+            time,
+            anonymous
+        });
+
+        res.json({
+            success: true,
+            reservation: newReservation
+        });
+
+    } catch (err) {
+        res.status(500).json({ message: err.message });
     }
 
-
-    const newReservation = {
-        id: Date.now(),
-        userId,
-        labId,
-        seat,
-        date,
-        time,
-        anonymous,
-        dateRequested: new Date().toISOString()
-    };
-
-    Reservations.add(newReservation);
-
-    res.json({
-        success: true,
-        reservation: newReservation
-    });
 });
 
-// UPDATE reservation
-router.put('/reservations/:id', (req, res) => {
-    Reservations.update(req.params.id, req.body);
-    res.json({ success: true });
+
+//UPDATE reservation
+router.put('/reservations/:id', async (req, res) => {
+
+    try {
+
+        await Reservation.findByIdAndUpdate(
+            req.params.id,
+            req.body
+        );
+
+        res.json({ success: true });
+
+    } catch (err) {
+        res.status(500).json({ message: err.message });
+    }
+
 });
 
-// DELETE reservation
-router.delete('/reservations/:id', (req, res) => {
-    Reservations.delete(req.params.id);
-    res.json({ success: true });
+
+//DELETE reservation
+router.delete('/reservations/:id', async (req, res) => {
+
+    try {
+
+        await Reservation.findByIdAndDelete(req.params.id);
+
+        res.json({ success: true });
+
+    } catch (err) {
+        res.status(500).json({ message: err.message });
+    }
+
 });
 
 module.exports = router;
