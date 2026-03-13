@@ -25,6 +25,9 @@ app.use('/', reservationRoutes);
 const userRoutes = require('./controller/userController');
 app.use('/', userRoutes);
 
+const technicianRoutes = require('./controller/technicianController');
+app.use('/', technicianRoutes);
+
 const labRoutes = require('./controller/labController');
 app.use('/', labRoutes);
 
