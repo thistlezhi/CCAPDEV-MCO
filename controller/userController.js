@@ -71,4 +71,18 @@ router.get('/users/:id/reservations', async (req, res) => {
     }
 });
 
+
+// GET ALL STUDENTS (for technician walk-in reservations)
+router.get('/users', async (req, res) => {
+    try {
+
+        const students = await Users.find({ role: 'student' });
+
+        res.json(students);
+
+    } catch (err) {
+        res.status(500).json({ message: "Error fetching students" });
+    }
+});
+
 module.exports = router;
