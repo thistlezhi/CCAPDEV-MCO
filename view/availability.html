@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Slot Availability</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="header">
+    <div class="homenav">
+      <div class="headertext home">Lab Reservation System</div>
+      <nav>
+        <a href="availability.html">View Slot Availability</a>
+        <a href="reserve.html" id="reserveLink">Reserve Slot</a>
+        <a href="reservations.html" id="myReservationsLink">My Reservations</a>
+        <a href="profile.html">User Profile</a>
+        <a href="technician.html" id="techLink" style="display:none;">Technician Dashboard</a>
+      </nav>
+    </div>
+  
+    <input type="button" value="Logout" id="logout" name="logout" onclick="logout()">
+  </div>
+  <div class="container">
+    <div class="availability">
+      <div class="headertext">View Slot Availability</div>
+        
+      <div class="labselection">
+        <select id="labSelect"></select>
+        <input type="date" id="dateSelect">
+
+        <div class="tablescroll">
+          <table id="slotsTable">
+            <tr>
+              <th>Time</th>
+              <th>Seat</th>
+              <th>Status</th>
+            </tr>
+          </table>
+        </div>
+      </div>
+
+      <div class="headertext">Search Available Slots</div>
+
+      <div class="searchslot">        
+        <div>
+          <select id="timeSelect"></select>
+          <button onclick="search()">Search</button>
+        </div>
+        <div class="resultscroll">
+          <ul id="results"></ul>
+        </div>
+      </div>
+      <!--Search Available Slots-->
+  
+  
+  
+    
+      <div class="backfooter">
+        <a href="home.html">Back to Home Page</a>
+      </div>
+    </div>
+
+  </div>
+
+  <script src="js/data.js"></script>
+  <script src="js/labs.js"></script>
+
+  <script>
+  // Restrict date picker to today and the next 7 days
+  const dateInput = document.getElementById('dateSelect');
+  
+  // Today's date will be the minimum date
+  const today = new Date();
+  const minDate = today.toISOString().split('T')[0];
+  
+  // Date 7 days from now
+  const maxDate = new Date(today);
+  maxDate.setDate(maxDate.getDate() + 7);
+  const maxDateString = maxDate.toISOString().split('T')[0];
+  
+  // Min and max attributes with its respective date values
+  dateInput.setAttribute('min', minDate);
+  dateInput.setAttribute('max', maxDateString);
+  
+  // Optionally set today as the default selected date
+  dateInput.value = minDate;
+
+  const timeSelect = document.getElementById("timeSelect");
+
+  //time is every 30 mins
+  function generateTimeOptions(){
+    for(let hour = 7; hour <= 21; hour++){
+      ["00", "30"].forEach(min => {
+        const time = `${String(hour).padStart(2, "0")}:${min}`;
+        const option = document.createElement("option");
+        option.value = time;
+        option.textContent = time;
+        timeSelect.appendChild(option);
+      });
+    }
+  }
+
+  generateTimeOptions();
+
+  // Search function
+  function search() {
+    const labId = Number(document.getElementById("labSelect").value);
+    const date = document.getElementById("dateSelect").value;
+    const time = document.getElementById("timeSelect").value;
+
+    const lab = labs.find(l => l.id === labId);
+    const results = document.getElementById("results");
+    results.innerHTML = "";
+
+    for (let seat = 1; seat <= lab.seats; seat++) {
+      const taken = reservations.find(r =>
+        r.labId === labId &&
+        r.date === date &&
+        r.time === time &&
+        r.seat === seat
+      );
+      
+      if (!taken) {
+        const li = document.createElement("li");
+        li.textContent = `Seat ${seat} is available`;
+        results.appendChild(li);
+      }
+    }
+  }
+
+
+
+</script>
+
+</body>
+</html>
