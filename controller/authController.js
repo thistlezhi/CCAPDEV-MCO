@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const bcrypt = require('bcrypt');
 
 
 const Users = require('../model/Users');
@@ -10,8 +11,8 @@ try {
         const { email, password } = req.body;
         // Use Mongoose findOne instead of array find
         const user = await Users.findOne({ email });
-
-        if (!user || user.password !== password) {
+        //Use bcrypt to compare the hashed password
+        if (!user || !(await bcrypt.compare(password, user.password))) {
             return res.json({ success: false, message: "Invalid email or password." });
         }
 
@@ -74,15 +75,13 @@ router.put('/reset-password', async (req, res) => {
     
     try {
         
-        const user = await Users.findOneAndUpdate(
-            { email: email },
-            { password: password }, 
-            { new: true }
-        );
-
+        const user = await Users.findOne({ email });
         if (!user) {
             return res.status(404).json({ success: false, message: "User not found" });
         }
+        // Update the password (the pre-save hook will hash it)
+        user.password = password;
+        await user.save();
 
         res.json({ success: true });
     } catch (err) {
