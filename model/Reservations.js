@@ -13,28 +13,3 @@ const reservationSchema = new mongoose.Schema({
 });
 
 module.exports = mongoose.model('Reservation', reservationSchema);
-
-/*
-exports.getAll = () => reservations;
-
-exports.getById = (id) =>
-  reservations.find(r => r.id === parseInt(id));
-
-exports.add = (reservation) => {
-  reservations.push(reservation);
-};
-
-exports.update = (id, updatedData) => {
-  const index = reservations.findIndex(r => r.id === parseInt(id));
-  if (index !== -1) {
-    reservations[index] = { ...reservations[index], ...updatedData };
-  }
-};
-
-exports.delete = (id) => {
-  reservations = reservations.filter(r => r.id !== parseInt(id));
-};
-
-exports.deleteByUser = (userId) => {
-    reservations = reservations.filter(r => r.userId !== parseInt(userId));
-};*/
