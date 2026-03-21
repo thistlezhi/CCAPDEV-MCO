@@ -1,8 +1,9 @@
 
 // USERS
-
 const mongoose = require('mongoose');
+const bcrypt = require('bcrypt');
 
+// Define the User schema
 const userSchema = new mongoose.Schema({
   name: { type: String, required: true },
   email: { type: String, required: true, unique: true },
@@ -10,32 +11,18 @@ const userSchema = new mongoose.Schema({
   role: { type: String, enum: ['student', 'technician'], default: 'student' },
   description: { type: String, default: "" }
 });
+// Hash the password before saving the user
+userSchema.pre('save', async function (next){
+  //Hash only if the password is new or modified
+  if (!this.isModified('password')) return;
+
+  //add salt 
+  try{
+    const salt = await bcrypt.genSalt(10);
+    this.password = await bcrypt.hash(this.password, salt);
+  } catch (error) {
+    throw error;
+  }
+});
 
 module.exports = mongoose.model('User', userSchema);
-/*
-exports.getUsers = () => users;
-
-exports.findByEmail = (email) =>
-    users.find(u => u.email === email);
-
-exports.addUser = (newUser) => {
-  users.push(newUser);
-};
-
-exports.getbyId = (id) =>
-  users.find(u => u.id === parseInt (id));
-
-exports.updateUser = (id, updatedData) => {
-  const index = users.findIndex(u => u.id === parseInt(id));
-
-  if (index !== -1) {
-    users[index] = {
-      ...users[index],
-      ...updatedData
-    };
-  }
-};
-
-exports.deleteUser = (id) => {
-  users = users.filter(u => u.id !== parseInt(id));
-}; */
