@@ -21,7 +21,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         if (userRes.ok) {
             document.getElementById("profileName").textContent = user.name;
             document.getElementById("profileDesc").textContent = user.description || "No description yet.";
-            document.getElementById("profilePic").src = user.profilePic || "images/blank_pfp.jpg";
+            document.getElementById("profilePic").src = user.profilePic || "/images/blank_pfp.jpg";
             
             // Populate modal fields
             document.getElementById("editDescription").value = user.description || "";
