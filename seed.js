@@ -23,8 +23,13 @@ const seedData = async () => {
             { name: "Alberto Descalzo", email: "alberto_descalzo@dlsu.edu.ph", password:"albert123", role: "student", description: "I prefer quiet computer laboratories." },
             { name: "Danny Cheng", email: "danny.cheng@dlsu.edu.ph", password:"dan123", role: "technician", description: "Lab technician assisting students." }
             ];
-        const createdUsers = await User.insertMany(users);
-        console.log("Users seeded!");
+        const createdUsers = [];
+        for(let u of users){
+            const newUser = new User(u);
+            await newUser.save();
+            createdUsers.push(newUser);
+        }
+        console.log("Users seeded and passwords hashed!");
 
         // 3. Insert Labs
         const labs = [
