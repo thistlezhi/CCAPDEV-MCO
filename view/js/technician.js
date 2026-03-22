@@ -224,7 +224,7 @@ function loadTimeSlots(){
 
 //7-DAY RESTRICTION
 
-function limitWalkinDate(){
+function limitDates(){
 
   const dateInput = document.getElementById("walkinDate")
   const editDate = document.getElementById("editDate")
@@ -323,5 +323,5 @@ document.getElementById("cancelWalkin").onclick=()=>{
 loadLabs()
 loadStudents()
 loadTimeSlots()
-limitWalkinDate()
+limitDates()
 loadReservations()
