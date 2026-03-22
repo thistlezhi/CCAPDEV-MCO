@@ -45,7 +45,7 @@ async function loadReservations(){
 }
 
 
-//EDIT RESRVATION
+//EDIT RESeRVATION
 
 async function openEdit(id){
 
@@ -132,16 +132,16 @@ async function loadLabs(){
   editLab.innerHTML = ""
   walkinLab.innerHTML = ""
 
-  labs.forEach(l=>{
+  labs.forEach(lab=>{
 
     const opt1 = document.createElement("option")
-    opt1.value = l._id
-    opt1.textContent = l.name
+    opt1.value = lab.id
+    opt1.textContent = lab.name
     editLab.appendChild(opt1)
 
     const opt2 = document.createElement("option")
-    opt2.value = l._id
-    opt2.textContent = l.name
+    opt2.value = lab.id
+    opt2.textContent = lab.name
     walkinLab.appendChild(opt2)
 
   })
@@ -184,12 +184,14 @@ async function loadStudents(){
 
 function loadTimeSlots(){
 
-  const timeSelect = document.getElementById("walkinTime")
+  const walkinTime = document.getElementById("walkinTime")
+  const editTime = document.getElementById("editTime")
 
-  timeSelect.innerHTML = ""
+  if(walkinTime) walkinTime.innerHTML = ""
+  if(editTime) editTime.innerHTML = ""
 
-  let start = 7 * 60     // 7:00
-  let end = 21 * 60 + 30 // 21:30
+  let start = 7 * 60
+  let end = 21 * 60 + 30
 
   for(let t = start; t <= end; t += 30){
 
@@ -199,11 +201,21 @@ function loadTimeSlots(){
     const hh = String(hours).padStart(2,'0')
     const mm = String(minutes).padStart(2,'0')
 
-    const option = document.createElement("option")
-    option.value = `${hh}:${mm}`
-    option.textContent = `${hh}:${mm}`
+    const value = `${hh}:${mm}`
 
-    timeSelect.appendChild(option)
+    if(walkinTime){
+      const opt = document.createElement("option")
+      opt.value = value
+      opt.textContent = value
+      walkinTime.appendChild(opt)
+    }
+
+    if(editTime){
+      const opt = document.createElement("option")
+      opt.value = value
+      opt.textContent = value
+      editTime.appendChild(opt)
+    }
 
   }
 
@@ -215,6 +227,7 @@ function loadTimeSlots(){
 function limitWalkinDate(){
 
   const dateInput = document.getElementById("walkinDate")
+  const editDate = document.getElementById("editDate")
 
   const today = new Date()
 
@@ -225,9 +238,16 @@ function limitWalkinDate(){
 
   const max = maxDate.toISOString().split("T")[0]
 
-  dateInput.min = min
-  dateInput.max = max
-  dateInput.value = min
+  if(walkinDate){
+    walkinDate.min = min
+    walkinDate.max = max
+    walkinDate.value = min
+  }
+
+  if(editDate){
+    editDate.min = min
+    editDate.max = max
+  }
 
 }
 
