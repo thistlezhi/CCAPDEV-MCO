@@ -13,6 +13,21 @@ router.post('/tech/walk-in', async (req, res) => {
             return res.status(404).json({ success: false, message: "Student not found." });
         }
 
+        //Validate slot
+        const existing = await Reservation.findOne({
+            labId,
+            seat,
+            date,
+            time
+        });
+
+        if (existing) {
+            return res.status(400).json({
+                success: false,
+                message: "Slot already reserved."
+            });
+        }
+
         // 2. Create reservation using student._id
         const newRes = await Reservation.create({
             userId: student._id,
