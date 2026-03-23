@@ -1,9 +1,10 @@
+require('dotenv').config();
 const mongoose = require('mongoose');
 const User = require('./model/Users'); 
 const Lab = require('./model/Labs');
 const Reservation = require('./model/Reservations');
 
-const dbURI = 'mongodb://127.0.0.1:27017/mco_database';
+const dbURI = "mongodb://tenshisato69:eighty80*six6@ac-aahfar4-shard-00-00.dxx1rrm.mongodb.net:27017,ac-aahfar4-shard-00-01.dxx1rrm.mongodb.net:27017,ac-aahfar4-shard-00-02.dxx1rrm.mongodb.net:27017/?replicaSet=atlas-92e1xx-shard-0&ssl=true&authSource=admin";
 
 const seedData = async () => {
     try {
