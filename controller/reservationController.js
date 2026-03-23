@@ -94,6 +94,23 @@ router.put('/reservations/:id', async (req, res) => {
 
     try {
 
+        const {labId, seat, date, time} = req.body;
+
+        const existing = await Reservation.findOne({
+            labId,
+            seat,
+            date,
+            time,
+            _id: {$ne: req.params.id} //ignore current reservation
+        });
+
+        if (existing) {
+            return res.status(400).json({
+                success: false,
+                message: "Slot already reserved."
+            });
+        }
+
         await Reservation.findByIdAndUpdate(
             req.params.id,
             req.body
