@@ -8,7 +8,7 @@ const dbURI = "mongodb://tenshisato69:eighty80*six6@ac-aahfar4-shard-00-00.dxx1r
 
 
 
-mongoose.connect('mongodb://127.0.0.1:27017/mco_database')
+mongoose.connect('mongodb://127.0.0.1:27017/test')
     .then(() => console.log("Connected to MongoDB..."))
     .catch(err => console.error("Connection error:", err));
 
