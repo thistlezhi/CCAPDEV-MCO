@@ -144,10 +144,14 @@ document.addEventListener("DOMContentLoaded", async () => {
             body: JSON.stringify(body)
         });
 
-        if (response.ok) {
-            await loadReservations();
-            await loadAvailableSeats();
+        const data = await response.json();
+
+        if (!response.ok || data.success === false) {
+            alert(data.message || "Failed to create reservation.")
+            return;
         }
+        await loadReservations();
+        await loadAvailableSeats();
     });
 
     // 7. Edit Form Submission
@@ -190,11 +194,21 @@ window.closeEditModal = function() {
 };
 
 async function saveEditReservation(id, body) {
-    await fetch(`/reservations/${id}`, {
+
+    const res = await fetch(`/reservations/${id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body)
     });
+
+    const data = await res.json();
+
+    if(!res.ok || data.success === false){
+        alert(data.message || "Slot already taken.")
+        return;
+    }
+    
+    closeEditModal();
     location.reload();
 }
 
