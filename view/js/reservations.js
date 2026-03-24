@@ -49,6 +49,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     // 3. Generate Time Options
     function generateTimeOptions(){
         timeSelect.innerHTML = "";
+
         for(let hour = 7; hour <= 21; hour++) {
             ["00", "30"].forEach(min => {
                 const time = `${String(hour).padStart(2,"0")}:${min}`;
@@ -58,8 +59,21 @@ document.addEventListener("DOMContentLoaded", async () => {
                 timeSelect.appendChild(opt);
             });
         }
+
+        editTime.innerHTML = "";
+
+        for(let hour = 7; hour <= 21; hour++) {
+            ["00", "30"].forEach(min => {
+                const time = `${String(hour).padStart(2,"0")}:${min}`;
+                const opt = document.createElement("option");
+                opt.value = time;
+                opt.textContent = time;
+                editTime.appendChild(opt);
+            });
+        }
     }
-    generateTimeOptions();
+    generateTimeOptions(timeSelect);
+    generateTimeOptions(editTime);
 
     // 4. Load Reservations into Table
     async function loadReservations() {
@@ -107,10 +121,16 @@ document.addEventListener("DOMContentLoaded", async () => {
         const res = await fetch(`/labs/${labId}/availability?date=${date}&time=${time}`);
         const seats = await res.json();
         seatSelect.innerHTML = "";
+        editSeat.innerHTML = "";
         const availableSeats = seats.filter(s => s.available);
 
         if(availableSeats.length === 0){
             seatSelect.innerHTML = "<option>No seats available.</option>";
+            return;
+        }
+
+        if(availableSeats.length === 0){
+            editSeat.innerHTML = "<option>No seats available.</option>";
             return;
         }
 
@@ -119,6 +139,13 @@ document.addEventListener("DOMContentLoaded", async () => {
             opt.value = s.seat;
             opt.textContent = `Seat ${s.seat}`;
             seatSelect.appendChild(opt);
+        });
+
+        availableSeats.forEach(s => {
+            const opt = document.createElement("option");
+            opt.value = s.seat;
+            opt.textContent = `Seat ${s.seat}`;
+            editSeat.appendChild(opt);
         });
     }
 
