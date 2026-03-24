@@ -4,7 +4,8 @@ const User = require('./model/Users');
 const Lab = require('./model/Labs');
 const Reservation = require('./model/Reservations');
 
-const dbURI = "mongodb://tenshisato69:eighty80*six6@ac-aahfar4-shard-00-00.dxx1rrm.mongodb.net:27017,ac-aahfar4-shard-00-01.dxx1rrm.mongodb.net:27017,ac-aahfar4-shard-00-02.dxx1rrm.mongodb.net:27017/?replicaSet=atlas-92e1xx-shard-0&ssl=true&authSource=admin";
+// Use MONGODB_URI from environment (Vercel), fallback to Atlas URI for local dev
+const dbURI = process.env.MONGODB_URI;
 
 const seedData = async () => {
     try {

@@ -4,11 +4,11 @@ const path = require('path');
 const mongoose = require('mongoose');
 
 const app = express();
-const dbURI = "mongodb://tenshisato69:eighty80*six6@ac-aahfar4-shard-00-00.dxx1rrm.mongodb.net:27017,ac-aahfar4-shard-00-01.dxx1rrm.mongodb.net:27017,ac-aahfar4-shard-00-02.dxx1rrm.mongodb.net:27017/?replicaSet=atlas-92e1xx-shard-0&ssl=true&authSource=admin";
 
+// Use MONGODB_URI from environment (Vercel), fallback to Atlas URI for local dev
+const dbURI = process.env.MONGODB_URI;
 
-
-mongoose.connect('mongodb://127.0.0.1:27017/test')
+mongoose.connect(dbURI)
     .then(() => console.log("Connected to MongoDB..."))
     .catch(err => console.error("Connection error:", err));
 
