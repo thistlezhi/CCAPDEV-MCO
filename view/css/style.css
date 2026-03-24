@@ -413,6 +413,42 @@ th, td {
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
 }
 
+/* About Page*/
+.about, .npm_stack{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 10px;                   
+  width: 80%;                  
+  max-width: 900px;
+  height: auto;
+  margin: 50px auto;
+  
+  background: rgba(0, 156, 8, 0.9); 
+  padding: 40px;
+  border-radius: 15px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+.about p, .npm_stack p{
+  color: #f0f0f0;
+  line-height: 1.6;
+}
+.npm_stack ul{
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  padding: 0px;
+}
+
+.npm_stack li {
+    background: rgba(255, 255, 255, 0.2);
+    padding: 8px 15px;
+    border-radius: 20px;
+    font-size: 0.9em;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    transition: transform 0.3s ease;
+}
+
 
 /* Modal Styles */
 
