@@ -97,7 +97,18 @@
         <form id="walkinForm">
 
           <label>Student</label>
-          <select id="walkinStudent"></select>
+          <div class="student-search">
+            <input
+              type="text"
+              id="walkinStudentSearch"
+              placeholder="Search by student name or email"
+              autocomplete="off"
+              required
+            >
+            <input type="hidden" id="walkinStudent">
+            <div id="walkinStudentResults" class="student-results"></div>
+            <div id="walkinStudentSelected" class="student-selected" hidden></div>
+          </div>
 
           <label>Lab</label>
           <select id="walkinLab"></select>
