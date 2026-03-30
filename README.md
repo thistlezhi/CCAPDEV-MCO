@@ -1,4 +1,5 @@
 # CCAPDEV-MCO
 
 Special Instruction:
-run the seed.js in order for it to run
+run the "node seed.js" first
+then run "node server.js"
