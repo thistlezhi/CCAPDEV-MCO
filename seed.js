@@ -1,9 +1,11 @@
+require('dotenv').config();
 const mongoose = require('mongoose');
 const User = require('./model/Users'); 
 const Lab = require('./model/Labs');
 const Reservation = require('./model/Reservations');
 
-const dbURI = 'mongodb://127.0.0.1:27017/mco_database';
+// Use MONGODB_URI from environment (Vercel), fallback to Atlas URI for local dev
+const dbURI = process.env.MONGODB_URI;
 
 const seedData = async () => {
     try {

@@ -1,12 +1,14 @@
-
+require('dotenv').config();
 const express = require('express');
 const path = require('path');
 const mongoose = require('mongoose');
 
 const app = express();
-const PORT = 3000;
 
-mongoose.connect('mongodb://127.0.0.1:27017/mco_database')
+// Use MONGODB_URI from environment (Vercel), fallback to Atlas URI for local dev
+const dbURI = process.env.MONGODB_URI;
+
+mongoose.connect(dbURI)
     .then(() => console.log("Connected to MongoDB..."))
     .catch(err => console.error("Connection error:", err));
 
@@ -35,6 +37,12 @@ app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'view', 'login.html'));
 });
 
-app.listen(PORT, ()=>{
-    console.log(`Server running at http://localhost:${PORT}`);
-});
+//IMPORTANT: Only start the server if NOT running on Vercel
+if (process.env.NODE_ENV !== 'production') {
+    const PORT = process.env.PORT || 3000;
+    app.listen(PORT, () => {
+        console.log(`Server running at http://localhost:${PORT}`);
+    });
+}
+
+module.exports = app;
